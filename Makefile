@@ -1,6 +1,5 @@
-.PHONY: build test before_test install clean
+.PHONY: test codecov
 SC=swift
-
 
 test:
 	$(SC) test --configuration debug -Xswiftc "-D" -Xswiftc "DEBUG"
