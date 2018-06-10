@@ -13,6 +13,8 @@ class Argument: ArgumentProtocol, Equatable {
 		return self.name == compare
 	}
 
+	func setValue(_ argument: Any) { }
+
 	static func Command<T>(_ name: String, withArguments arguments: [Argument]) -> CommandOption<T> {
 		return CommandOption<T>(name, withArguments: arguments)
 	}

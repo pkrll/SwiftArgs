@@ -1,9 +1,9 @@
 
-class FlagOption<T>: Argument {
+class FlagOption<T: RawRepresentable>: Argument where T.RawValue == String {
 
 	let shortFlag: String
 	let longFlag: String
-	var value: String?
+	var value: T?
 
 	init(name: String, shortFlag: String, longFlag: String = "") {
 		self.shortFlag = shortFlag
@@ -19,6 +19,11 @@ class FlagOption<T>: Argument {
 
 	override func equals(_ compare: String) -> Bool {
 		return "-\(self.shortFlag)" == compare || "-\(self.longFlag)" == compare
+	}
+
+	override func setValue(_ value: Any) {
+		guard let value = value as? String else { return }
+		self.value = T(rawValue: value)
 	}
 
 }
