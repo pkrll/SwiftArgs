@@ -1,5 +1,5 @@
 
-class Argument: ArgumentProtocol, Equatable {
+class Argument: Equatable {
 
 	let name: String
 	var type: ArgumentType

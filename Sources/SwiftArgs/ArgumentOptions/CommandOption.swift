@@ -2,7 +2,7 @@
 class CommandOption: Argument {
 
 	let arguments: [Argument]
-	var value: ArgumentProtocol?
+	var value: Argument?
 
 	init(_ name: String, withArguments arguments: [Argument]) {
 		self.arguments = arguments
@@ -11,15 +11,15 @@ class CommandOption: Argument {
 	}
 
 	func takesArgument(_ argument: String) -> Bool {
-		return false
+		return self.arguments.contains(argument)
 	}
 
-	subscript(argument: String) -> ArgumentProtocol? {
-		return nil
+	subscript(argument: String) -> Argument? {
+		return self.arguments[argument]
 	}
 
 	override func setValue(_ value: Any) {
-		guard let value = value as? ArgumentProtocol else { return }
+		guard let value = value as? Argument else { return }
 		self.value = value
 	}
 
