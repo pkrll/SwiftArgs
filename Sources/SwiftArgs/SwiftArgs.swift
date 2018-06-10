@@ -4,8 +4,12 @@
 //
 public struct SwiftArgs {
 
-  init(arguments: [String] = []) {
-    
+  init(arguments: [Argument] = []) {
+
   }
+
+	func parse() {
+
+	}
 
 }
