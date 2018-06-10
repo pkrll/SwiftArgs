@@ -26,7 +26,7 @@ internal class SwiftArgsParser {
 		self.givenArguments = arguments!
 		while let nextArgument = self.nextArgument {
 			guard let argument = self.validArguments[nextArgument] else {
-				throw SwiftArgsError.invalidArgument(message: "Invalid argument -- \(nextArgument)")
+				throw SwiftArgsError.invalidArgument(nextArgument)
 			}
 
 			try self.parse(argument)
@@ -52,7 +52,7 @@ internal class SwiftArgsParser {
 		while let argument = self.nextArgument {
 			guard commandOption.takesArgument(argument), let subArgument = commandOption[argument] else {
 				self.currentIndex -= 1
-				throw SwiftArgsError.invalidCommand(message: "Invalid option \(argument) for command \(commandOption.name)")
+				throw SwiftArgsError.invalidCommand(argument, for: commandOption.name)
 			}
 
 			try self.parse(subArgument)
@@ -64,7 +64,9 @@ internal class SwiftArgsParser {
 
 	private func parse(flagOption: Argument) throws {
 		guard let argument = self.nextArgument else {
-			throw SwiftArgsError.invalidValue(message: "\(flagOption.name) requires a value")
+			self.currentIndex -= 1
+			let flag = self.nextArgument ?? flagOption.name
+			throw SwiftArgsError.missingValue(flag)
 		}
 
 		try flagOption.setValue(argument)

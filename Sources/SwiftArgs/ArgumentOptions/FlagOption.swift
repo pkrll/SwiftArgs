@@ -27,7 +27,7 @@ class FlagOption<T: RawRepresentable>: Argument where T.RawValue == String {
 		if let value = T(rawValue: value) {
 			self.value = value
 		} else {
-			throw SwiftArgsError.invalidValue(message: "Invalid value for -\(self.shortFlag) (--\(self.longFlag))")
+			throw SwiftArgsError.invalidValue(value, for: "-\(self.shortFlag) (--\(self.longFlag))")
 		}
 	}
 
