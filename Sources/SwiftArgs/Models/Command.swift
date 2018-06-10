@@ -1,16 +1,27 @@
 
-public class Command {
+internal class Command: ArgumentType {
 
-  let commands: [Command]
-  let options: [Option]
+  var subCommands: [Command]
+  var flagOptions: [Option]
 
-  init(commands: [Command] = [], options: [Option] = []) {
-    self.commands = commands
-    self.options = options
+	let name: String
+
+  init(name: String, withSubCommands subCommands: [Command] = [], flagOptions: [Option] = []) {
+		self.name = name
+    self.subCommands = subCommands
+    self.flagOptions = flagOptions
   }
 
-  convenience init(options: [Option]) {
-    super.init(commands: [], options: options)
+  convenience init(name: String, withOptions options: [Option]) {
+    self.init(name: name, withSubCommands: [], flagOptions: options)
   }
+
+	func addSubCommands(_ subCommands: [Command]) {
+		self.subCommands.append(contentsOf: subCommands)
+	}
+
+	func addOptions(_ flagOptions: [Option]) {
+		self.flagOptions.append(contentsOf: flagOptions)
+	}
 
 }
