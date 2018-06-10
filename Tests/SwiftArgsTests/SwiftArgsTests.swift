@@ -1,5 +1,5 @@
 import XCTest
-@testable import SwiftArgs
+import SwiftArgs
 
 enum View: String {
 	case All = "all"
