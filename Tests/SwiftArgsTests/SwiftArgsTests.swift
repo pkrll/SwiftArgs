@@ -17,6 +17,7 @@ final class SwiftArgsTests: XCTestCase {
 	static var allTests = [
 		("testSwiftArgs", testSwiftArgs),
 		("testSwiftArgs2", testSwiftArgs2),
+		("testSwiftArgsError", testSwiftArgsError),
 	]
 
 	func testSwiftArgs() {
@@ -74,6 +75,60 @@ final class SwiftArgsTests: XCTestCase {
 		} catch {
 			print(error)
 		}
+	}
+
+	func testSwiftArgsError() {
+		enum Flags: String {
+			case Bar = "bar"
+		}
+
+
+		let compose = CommandOption("compose", withArguments: [])
+		let flags = FlagOption<Flags>(name: "flags", longFlag: "type")
+
+		let args = SwiftArgs(arguments: [compose, flags])
+
+		func testInvalidArgument() throws { try args.parse(["--help"]) }
+		func testInvalidCommand() throws { try args.parse(["compose", "foo"]) }
+		func testInvalidValue() throws { try args.parse(["--type", "foo"]) }
+		func testMissingValue() throws { try args.parse(["--type"]) }
+
+		XCTAssertThrowsError(try testInvalidArgument()) { error in
+			let error = error as! SwiftArgsError
+
+			switch error {
+				case .invalidArgument: XCTAssertTrue(true)
+				default: XCTAssertTrue(false)
+			}
+		}
+
+		XCTAssertThrowsError(try testInvalidCommand()) { error in
+			let error = error as! SwiftArgsError
+
+			switch error {
+				case .invalidCommand: XCTAssertTrue(true)
+				default: XCTAssertTrue(false)
+			}
+		}
+
+		XCTAssertThrowsError(try testInvalidValue()) { error in
+			let error = error as! SwiftArgsError
+
+			switch error {
+				case .invalidValue: XCTAssertTrue(true)
+				default: XCTAssertTrue(false)
+			}
+		}
+
+		XCTAssertThrowsError(try testMissingValue()) { error in
+			let error = error as! SwiftArgsError
+
+			switch error {
+				case .missingValue: XCTAssertTrue(true)
+				default: XCTAssertTrue(false)
+			}
+		}
+
 	}
 
 }
