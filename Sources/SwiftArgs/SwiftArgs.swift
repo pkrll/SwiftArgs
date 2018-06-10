@@ -4,12 +4,14 @@
 //
 public struct SwiftArgs {
 
-  init(arguments: [Argument] = []) {
+	let parser: SwiftArgsParser
 
+  init(arguments: [Argument] = []) {
+		self.parser = SwiftArgsParser(arguments: arguments)
   }
 
-	func parse() {
-
+	func parse(_ arguments: [String]? = nil) {
+		self.parser.start(arguments)
 	}
 
 }
