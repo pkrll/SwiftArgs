@@ -1,5 +1,5 @@
 
-class CommandOption<ArgumentProtocol>: Argument {
+class CommandOption: Argument {
 
 	let arguments: [Argument]
 	var value: ArgumentProtocol?

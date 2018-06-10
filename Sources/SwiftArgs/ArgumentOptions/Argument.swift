@@ -15,8 +15,8 @@ class Argument: ArgumentProtocol, Equatable {
 
 	func setValue(_ argument: Any) { }
 
-	static func Command<T>(_ name: String, withArguments arguments: [Argument]) -> CommandOption<T> {
-		return CommandOption<T>(name, withArguments: arguments)
+	static func Command(_ name: String, withArguments arguments: [Argument]) -> CommandOption {
+		return CommandOption(name, withArguments: arguments)
 	}
 
 	static func Switch(_ name: String) -> SwitchOption {
