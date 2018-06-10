@@ -17,4 +17,8 @@ class FlagOption<T>: Argument {
 		self.init(name: name, shortFlag: "", longFlag: longFlag)
 	}
 
+	override func equals(_ compare: String) -> Bool {
+		return "-\(self.shortFlag)" == compare || "-\(self.longFlag)" == compare
+	}
+
 }

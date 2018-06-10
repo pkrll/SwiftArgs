@@ -9,6 +9,10 @@ class Argument: ArgumentProtocol, Equatable {
 		self.type = .Argument
 	}
 
+	func equals(_ compare: String) -> Bool {
+		return self.name == compare
+	}
+
 	static func Command<T>(_ name: String, withArguments arguments: [Argument]) -> CommandOption<T> {
 		return CommandOption<T>(name, withArguments: arguments)
 	}

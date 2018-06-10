@@ -5,7 +5,7 @@ extension Array where Element:Argument {
 	}
 
 	func element(withName name: String) -> Argument? {
-		return self.filter { $0 == name }.first
+		return self.filter { $0.equals(name) }.first
 	}
 
 }
