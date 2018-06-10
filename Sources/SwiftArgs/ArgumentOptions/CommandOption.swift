@@ -1,24 +1,32 @@
+//
+// CommandOption.swift
+// Created by Ardalan Samimi on 2018-06-10
+//
+public class CommandOption: Argument {
 
-class CommandOption: Argument {
-
-	let arguments: [Argument]
-	var value: Argument?
-
-	init(_ name: String, withArguments arguments: [Argument]) {
+	private let arguments: [Argument]
+	private(set) var value: Argument?
+	/**
+	 *  CommandOption represents a command (i.e. init).
+	 *
+	 *  - Parameter name: Name of the option
+	 *  - Parameter withArguments: List of sub arguments.
+	 */
+	public init(_ name: String, withArguments arguments: [Argument]) {
 		self.arguments = arguments
 		super.init(name: name)
 		self.type = .CommandOption
 	}
 
-	func takesArgument(_ argument: String) -> Bool {
+	internal func takesArgument(_ argument: String) -> Bool {
 		return self.arguments.contains(argument)
 	}
 
-	subscript(argument: String) -> Argument? {
+	internal subscript(argument: String) -> Argument? {
 		return self.arguments[argument]
 	}
 
-	override func setValue(_ value: Any) throws {
+	internal override func setValue(_ value: Any?) throws {
 		guard let value = value as? Argument else { return }
 		self.value = value
 	}

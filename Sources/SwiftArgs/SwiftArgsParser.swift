@@ -1,12 +1,11 @@
 //
 // SwiftArgsParser.swift
-// Created by Ardalan Samimi on 2018-06-09
+// Created by Ardalan Samimi on 2018-06-10
 //
-
 internal class SwiftArgsParser {
 
-	let validArguments: [Argument]
-	var givenArguments: [String] = []
+	private let validArguments: [Argument]
+	private var givenArguments: [String] = []
 
 	private var currentIndex: Int = 0
 
@@ -17,11 +16,22 @@ internal class SwiftArgsParser {
 
 		return currentArgument
 	}
-
+	/**
+	 *  Initializes the argument parser.
+	 *
+	 *  - Parameter arguments: List of valid arguments.
+	 */
 	init(arguments: [Argument]) {
 		self.validArguments = arguments
 	}
-
+	/**
+	 * 	Starts parsing the given arguments.
+	 *
+	 * 	- Parameter arguments: A list of arguments to parse (optional).
+	 *
+	 * 	- Throws: `SwiftArgsError.invalidArgument` if the `arguments` parameter
+	 * 		contains arguments that does not match those in `validArguments`.
+	 */
 	func start(_ arguments: [String]? = CommandLine.arguments) throws {
 		self.givenArguments = arguments!
 		while let nextArgument = self.nextArgument {
@@ -57,7 +67,7 @@ internal class SwiftArgsParser {
 
 			try self.parse(subArgument)
 
-			commandOption.value = commandOption[argument]
+			try! commandOption.setValue(commandOption[argument])
 		}
 
 	}

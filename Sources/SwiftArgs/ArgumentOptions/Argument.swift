@@ -1,33 +1,36 @@
-
-class Argument: Equatable {
+//
+// Argument.swift
+// Created by Ardalan Samimi on 2018-06-10
+//
+public class Argument {
 
 	let name: String
 	var type: ArgumentType
 
-	init(name: String) {
+	public init(name: String) {
 		self.name = name
 		self.type = .Argument
 	}
 
-	func equals(_ compare: String) -> Bool {
+	internal func equals(_ compare: String) -> Bool {
 		return self.name == compare
 	}
 
-	func setValue(_ argument: Any) throws { }
+	internal func setValue(_ argument: Any) throws { }
 
-	static func Command(_ name: String, withArguments arguments: [Argument]) -> CommandOption {
+	public static func Command(_ name: String, withArguments arguments: [Argument]) -> CommandOption {
 		return CommandOption(name, withArguments: arguments)
 	}
 
-	static func Switch(_ name: String) -> SwitchOption {
+	public static func Switch(_ name: String) -> SwitchOption {
 		return SwitchOption(name: name)
 	}
 
-	static func Flag<T>(_ name: String, shortFlag: String, longFlag: String = "") -> FlagOption<T> {
+	public static func Flag<T>(_ name: String, shortFlag: String, longFlag: String = "") -> FlagOption<T> {
 		return FlagOption<T>(name: name, shortFlag: shortFlag, longFlag: longFlag)
 	}
 
-	static func Flag<T>(_ name: String, longFlag: String) -> FlagOption<T> {
+	public static func Flag<T>(_ name: String, longFlag: String) -> FlagOption<T> {
 		return FlagOption<T>(name: name, shortFlag: "", longFlag: longFlag)
 	}
 

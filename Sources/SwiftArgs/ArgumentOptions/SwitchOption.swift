@@ -1,15 +1,22 @@
+//
+// SwitchOption.swift
+// Created by Ardalan Samimi on 2018-06-10
+//
+public class SwitchOption: Argument {
 
-class SwitchOption: Argument {
-
-	var value: Bool = false
-
+	private(set) var value: Bool = false
+	/**
+	 *  SwitchOption represents a boolean argument (i.e. --no-install).
+	 *
+	 *  - Parameter name: Name of the option.
+	 */
 	override init(name: String) {
 		super.init(name: name)
 
 		self.type = .SwitchOption
 	}
 
-	override func setValue(_ value: Any) throws {
+	internal override func setValue(_ value: Any) throws {
 		guard let value = value as? Bool else { return }
 		self.value = value
 	}

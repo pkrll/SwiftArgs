@@ -1,14 +1,18 @@
-internal extension Argument {
+//
+// Argument+Equatable.swift
+// Created by Ardalan Samimi on 2018-06-10
+//
+extension Argument: Equatable {
 
-	static func ==(lhs: Argument, rhs: String) -> Bool {
+	public static func ==(lhs: Argument, rhs: String) -> Bool {
 		return lhs.name == rhs
 	}
 
-	static func ==(lhs: String, rhs: Argument) -> Bool {
+	public static func ==(lhs: String, rhs: Argument) -> Bool {
 		return lhs == rhs.name
 	}
 
-	static func ==(lhs: Argument, rhs: Argument) -> Bool {
+	public static func ==(lhs: Argument, rhs: Argument) -> Bool {
 		return lhs.name == rhs.name
 	}
 

@@ -1,4 +1,7 @@
-
+//
+// SwiftArgsError.swift
+// Created by Ardalan Samimi on 2018-06-10
+//
 public enum SwiftArgsError: Error, CustomStringConvertible {
 
 	case missingValue(String)
