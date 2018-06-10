@@ -32,7 +32,7 @@ public class FlagOption<T: RawRepresentable>: Argument where T.RawValue == Strin
 	}
 
 	internal override func equals(_ compare: String) -> Bool {
-		return "-\(self.shortFlag)" == compare || "-\(self.longFlag)" == compare
+		return "-\(self.shortFlag)" == compare || "--\(self.longFlag)" == compare
 	}
 
 	internal override func setValue(_ value: Any) throws {

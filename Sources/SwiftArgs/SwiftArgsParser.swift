@@ -34,6 +34,8 @@ internal class SwiftArgsParser {
 	 */
 	func start(_ arguments: [String]? = CommandLine.arguments) throws {
 		self.givenArguments = Array(arguments![1...])
+		self.currentIndex = 0
+
 		while let nextArgument = self.nextArgument {
 			guard let argument = self.validArguments[nextArgument] else {
 				throw SwiftArgsError.invalidArgument(nextArgument)
