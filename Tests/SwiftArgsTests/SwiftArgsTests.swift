@@ -16,6 +16,7 @@ final class SwiftArgsTests: XCTestCase {
 
 	static var allTests = [
 		("testSwiftArgs", testSwiftArgs),
+		("testSwiftArgs2", testSwiftArgs2),
 	]
 
 	func testSwiftArgs() {
@@ -29,13 +30,13 @@ final class SwiftArgsTests: XCTestCase {
 		let args = SwiftArgs(arguments: [clean, view, initOpt])
 
 		do {
-			try args.parse(["SwiftArgs", "clean"])
+			try args.parse(["clean"])
 			XCTAssertTrue(clean.value)
 
-			try args.parse(["SwiftArgs", "init", "library"])
+			try args.parse(["init", "library"])
 			XCTAssertTrue(library.value)
 
-			try args.parse(["SwiftArgs", "init", "folder", "--privacy", "public"])
+			try args.parse(["init", "folder", "--privacy", "public"])
 
 			if let privacy = folder.value as? FlagOption<PrivacyLevel> {
 				XCTAssertEqual(privacy.value, PrivacyLevel.Public)
@@ -47,6 +48,32 @@ final class SwiftArgsTests: XCTestCase {
 			XCTAssertTrue(false, "\(error)")
 		}
 
+	}
+
+	func testSwiftArgs2() {
+		enum Language: String {
+			case C = "c"
+			case Python = "python"
+		}
+
+		let help = SwitchOption(name: "--help")
+
+		let languagesFlags = FlagOption<Language>(name: "Language", shortFlag: "l", longFlag: "language")
+		let libraryCommand = CommandOption("library", withArguments: [languagesFlags])
+		let executableCmnd = CommandOption("executable", withArguments: [languagesFlags])
+
+		let compose = CommandOption("compose", withArguments: [executableCmnd, libraryCommand])
+
+		let args = SwiftArgs(arguments: [compose, help])
+
+		do {
+			try args.parse(["compose", "library", "-l", "c"])
+			if let flags = libraryCommand.value as? FlagOption<Language> {
+				XCTAssertEqual(flags.value, Language.C)
+			}
+		} catch {
+			print(error)
+		}
 	}
 
 }
