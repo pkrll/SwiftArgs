@@ -5,7 +5,7 @@
 public class CommandOption: Argument {
 
 	private let arguments: [Argument]
-	private(set) var value: Argument?
+	private(set) public var value: Argument?
 	/**
 	 *  CommandOption represents a command (i.e. init).
 	 *

@@ -4,13 +4,13 @@
 //
 public class SwitchOption: Argument {
 
-	private(set) var value: Bool = false
+	private(set) public var value: Bool = false
 	/**
 	 *  SwitchOption represents a boolean argument (i.e. --no-install).
 	 *
 	 *  - Parameter name: Name of the option.
 	 */
-	override init(name: String) {
+	public override init(name: String) {
 		super.init(name: name)
 
 		self.type = .SwitchOption
