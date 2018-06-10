@@ -18,7 +18,7 @@ class CommandOption: Argument {
 		return self.arguments[argument]
 	}
 
-	override func setValue(_ value: Any) {
+	override func setValue(_ value: Any) throws {
 		guard let value = value as? Argument else { return }
 		self.value = value
 	}

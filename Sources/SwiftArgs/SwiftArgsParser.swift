@@ -22,51 +22,52 @@ internal class SwiftArgsParser {
 		self.validArguments = arguments
 	}
 
-	func start(_ arguments: [String]? = CommandLine.arguments) {
+	func start(_ arguments: [String]? = CommandLine.arguments) throws {
 		self.givenArguments = arguments!
-		while let argument = self.nextArgument {
-			self.parse(argument)
+		while let nextArgument = self.nextArgument {
+			guard let argument = self.validArguments[nextArgument] else {
+				throw SwiftArgsError.invalidArgument(message: "Invalid argument -- \(nextArgument)")
+			}
+
+			try self.parse(argument)
 		}
 
 	}
 
-	private func parse(_ argument: String) {
-		guard let argument = self.validArguments[argument] else { return } // TODO: Throw error
-
+	private func parse(_ argument: Argument) throws {
 		if argument.type == .FlagOption {
-			self.parse(flagOption: argument)
+			try self.parse(flagOption: argument)
 		} else if argument.type == .SwitchOption {
 			self.parse(switchOption: argument)
 		} else if argument.type == .CommandOption {
-			self.parse(commandOption: argument as! CommandOption<Any>)
+			try self.parse(commandOption: argument as! CommandOption)
 		}
 	}
 
 	private func parse(switchOption: Argument) {
-		switchOption.setValue(true)
+		try! switchOption.setValue(true)
 	}
 
-	private func parse(commandOption: CommandOption<Any>) {
+	private func parse(commandOption: CommandOption) throws {
 		while let argument = self.nextArgument {
-			guard commandOption.takesArgument(argument) else {
+			guard commandOption.takesArgument(argument), let subArgument = commandOption[argument] else {
 				self.currentIndex -= 1
-				return
+				throw SwiftArgsError.invalidCommand(message: "Invalid option \(argument) for command \(commandOption.name)")
 			}
 
-			self.parse(argument)
+			try self.parse(subArgument)
 
 			commandOption.value = commandOption[argument]
 		}
 
 	}
 
-	private func parse(flagOption: Argument) {
+	private func parse(flagOption: Argument) throws {
 		guard let argument = self.nextArgument else {
-			// TODO: Throw error
-			return
+			throw SwiftArgsError.invalidValue(message: "\(flagOption.name) requires a value")
 		}
 
-		flagOption.setValue(argument)
+		try flagOption.setValue(argument)
 	}
 
 }

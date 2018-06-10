@@ -9,7 +9,7 @@ class SwitchOption: Argument {
 		self.type = .SwitchOption
 	}
 
-	override func setValue(_ value: Any) {
+	override func setValue(_ value: Any) throws {
 		guard let value = value as? Bool else { return }
 		self.value = value
 	}

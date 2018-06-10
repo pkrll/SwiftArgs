@@ -13,7 +13,7 @@ class Argument: Equatable {
 		return self.name == compare
 	}
 
-	func setValue(_ argument: Any) { }
+	func setValue(_ argument: Any) throws { }
 
 	static func Command(_ name: String, withArguments arguments: [Argument]) -> CommandOption {
 		return CommandOption(name, withArguments: arguments)

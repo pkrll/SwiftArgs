@@ -21,9 +21,14 @@ class FlagOption<T: RawRepresentable>: Argument where T.RawValue == String {
 		return "-\(self.shortFlag)" == compare || "-\(self.longFlag)" == compare
 	}
 
-	override func setValue(_ value: Any) {
+	override func setValue(_ value: Any) throws {
 		guard let value = value as? String else { return }
-		self.value = T(rawValue: value)
+
+		if let value = T(rawValue: value) {
+			self.value = value
+		} else {
+			throw SwiftArgsError.invalidValue(message: "Invalid value for -\(self.shortFlag) (--\(self.longFlag))")
+		}
 	}
 
 }

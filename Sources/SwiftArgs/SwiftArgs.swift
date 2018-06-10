@@ -10,8 +10,8 @@ public struct SwiftArgs {
 		self.parser = SwiftArgsParser(arguments: arguments)
   }
 
-	func parse(_ arguments: [String]? = nil) {
-		self.parser.start(arguments)
+	func parse(_ arguments: [String]? = nil) throws {
+		try self.parser.start(arguments)
 	}
 
 }
