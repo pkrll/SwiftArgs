@@ -2,8 +2,8 @@
 [![codecov](https://codecov.io/gh/pkrll/SwiftArgs/branch/master/graph/badge.svg)](https://codecov.io/gh/pkrll/SwiftArgs)
 ![sonar](https://sonarcloud.io/api/project_badges/measure?project=SwiftArgs&metric=alert_status)
 [![cocoapod](https://img.shields.io/cocoapods/v/Swiftargs.svg)](https://cocoapods.org/pods/SwiftArgs)
-![release](https://img.shields.io/github/release/pkrll/Swiftargs.svg)
-![commits since latest release](https://img.shields.io/github/commits-since/pkrll/Swiftargs/latest.svg)
+![release](https://img.shields.io/github/tag/pkrll/Swiftargs.svg)
+![commits since latest release](https://img.shields.io/github/commits-since/pkrll/Swiftargs/0.3.2.svg)
 
 <img src=".assets/SwiftArgs.png" data-canonical-src=".assets/SwiftArgs.png" align="right" width="250px"/>
 
