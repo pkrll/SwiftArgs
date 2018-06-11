@@ -96,7 +96,9 @@ final class SwiftArgsTests: XCTestCase {
 			let error = error as! SwiftArgsError
 
 			switch error {
-				case .invalidArgument: XCTAssertTrue(true)
+				case .invalidArgument:
+					XCTAssertTrue(true)
+					XCTAssertEqual(error.description, "Invalid argument -- --help")
 				default: XCTAssertTrue(false)
 			}
 		}
@@ -105,7 +107,9 @@ final class SwiftArgsTests: XCTestCase {
 			let error = error as! SwiftArgsError
 
 			switch error {
-				case .invalidCommand: XCTAssertTrue(true)
+				case .invalidCommand:
+					XCTAssertTrue(true)
+					XCTAssertEqual(error.description, "Invalid value 'foo' for compose")
 				default: XCTAssertTrue(false)
 			}
 		}
@@ -114,8 +118,11 @@ final class SwiftArgsTests: XCTestCase {
 			let error = error as! SwiftArgsError
 
 			switch error {
-				case .invalidValue: XCTAssertTrue(true)
-				default: XCTAssertTrue(false)
+				case .invalidValue:
+					XCTAssertTrue(true)
+					XCTAssertEqual(error.description, "Invalid value 'foo' for --type")
+				default:
+					XCTAssertTrue(false)
 			}
 		}
 
@@ -123,8 +130,11 @@ final class SwiftArgsTests: XCTestCase {
 			let error = error as! SwiftArgsError
 
 			switch error {
-				case .missingValue: XCTAssertTrue(true)
-				default: XCTAssertTrue(false)
+				case .missingValue:
+					XCTAssertTrue(true)
+					XCTAssertEqual(error.description, "--type requires a value")
+				default:
+					XCTAssertTrue(false)
 			}
 		}
 
