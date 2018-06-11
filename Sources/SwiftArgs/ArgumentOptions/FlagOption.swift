@@ -2,10 +2,12 @@
 // FlagOption.swift
 // Created by Ardalan Samimi on 2018-06-10
 //
-public class FlagOption<T: RawRepresentable>: Argument where T.RawValue == String {
+
+public class FlagOption<T>: Argument {
 
 	let shortFlag: String?
 	let longFlag: String?
+
 	private(set) public var value: T?
 
 	override public var description: String {
@@ -20,6 +22,7 @@ public class FlagOption<T: RawRepresentable>: Argument where T.RawValue == Strin
 
 		return description
 	}
+
 	/**
 	 *  FlagOption represents a flag argument (i.e. --flag).
 	 *
@@ -31,8 +34,6 @@ public class FlagOption<T: RawRepresentable>: Argument where T.RawValue == Strin
 		self.shortFlag = shortFlag
 		self.longFlag = longFlag
 		super.init(name: name, usageMessage: usageMessage)
-
-		self.type = .FlagOption
 	}
 	/**
 	 *  FlagOption represents a flag argument (i.e. --flag).
@@ -52,16 +53,8 @@ public class FlagOption<T: RawRepresentable>: Argument where T.RawValue == Strin
 	}
 
 	internal override func setValue(_ value: Any) throws {
-		guard let value = value as? String else { return }
-
-		if let value = T(rawValue: value) {
-			self.value = value
-		} else {
-			var flags = (self.shortFlag != nil) ? "-\(self.shortFlag!), " : ""
-			flags += (self.longFlag != nil) ? "--\(self.longFlag!)" : ""
-
-			throw SwiftArgsError.invalidValue(value, for: flags)
-		}
+		guard let value = value as? T else { return }
+		self.value = value
 	}
 
 }

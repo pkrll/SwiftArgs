@@ -5,8 +5,9 @@
 enum ArgumentType: Hashable {
 
 	case Argument
-	case FlagOption
-	case SwitchOption
+	case StringOption
+	case BoolOption
+	case EnumOption
 	case CommandOption
 
 }

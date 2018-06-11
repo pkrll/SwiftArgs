@@ -31,8 +31,8 @@ internal class SwiftArgsParser {
 		var description = ""
 
 		let commands = self.validArguments.filter { $0.type == .CommandOption }
-		let switches = self.validArguments.filter { $0.type == .SwitchOption }
-		let flags = self.validArguments.filter { $0.type == .FlagOption }
+		// let switches = self.validArguments.filter { $0.type == .SwitchOption }
+		// let flags = self.validArguments.filter { $0.type == .FlagOption }
 
 		var swiftConsole = SwiftConsole()
 
@@ -41,11 +41,11 @@ internal class SwiftArgsParser {
 			commands.forEach { swiftConsole.addRow(leftColumn: $0.name, rightColumn: $0.help) }
 		}
 
-		if switches.count > 0 || flags.count > 0 {
-			swiftConsole.addHeader("Optional arguments:")
-			switches.forEach { swiftConsole.addRow(leftColumn: $0.description, rightColumn: $0.help) }
-			flags.forEach { swiftConsole.addRow(leftColumn: $0.description, rightColumn: $0.help) }
-		}
+		// if switches.count > 0 || flags.count > 0 {
+		// 	swiftConsole.addHeader("Optional arguments:")
+		// 	switches.forEach { swiftConsole.addRow(leftColumn: $0.description, rightColumn: $0.help) }
+		// 	flags.forEach { swiftConsole.addRow(leftColumn: $0.description, rightColumn: $0.help) }
+		// }
 
 		description += swiftConsole.prettyFormat()
 
@@ -74,17 +74,39 @@ internal class SwiftArgsParser {
 	}
 
 	private func parse(_ argument: Argument) throws {
-		if argument.type == .FlagOption {
-			try self.parse(flagOption: argument)
-		} else if argument.type == .SwitchOption {
-			self.parse(switchOption: argument)
+		if argument.type == .StringOption {
+			try self.parse(stringOption: argument)
+		} else if argument.type == .BoolOption {
+			self.parse(boolOption: argument)
+		} else if argument.type == .EnumOption {
+			try self.parse(enumOption: argument)
 		} else if argument.type == .CommandOption {
 			try self.parse(commandOption: argument as! CommandOption)
 		}
 	}
 
-	private func parse(switchOption: Argument) {
-		try! switchOption.setValue(true)
+	private func parse(boolOption: Argument) {
+		try! boolOption.setValue(true)
+	}
+
+	private func parse(stringOption: Argument) throws {
+		guard let argument = self.nextArgument else {
+			self.currentIndex -= 1
+			let flag = self.nextArgument ?? stringOption.name
+			throw SwiftArgsError.missingValue(flag)
+		}
+
+		try stringOption.setValue(argument)
+	}
+
+	private func parse(enumOption: Argument) throws {
+		guard let argument = self.nextArgument else {
+			self.currentIndex -= 1
+			let flag = self.nextArgument ?? enumOption.name
+			throw SwiftArgsError.missingValue(flag)
+		}
+
+		try enumOption.setValue(argument)
 	}
 
 	private func parse(commandOption: CommandOption) throws {
