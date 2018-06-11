@@ -19,4 +19,8 @@ public struct SwiftArgs {
 		print(error)
 	}
 
+	public func printUsage() {
+		self.parser.printUsage()
+	}
+
 }

@@ -24,6 +24,18 @@ internal class SwiftArgsParser {
 	init(arguments: [Argument]) {
 		self.validArguments = arguments
 	}
+
+	func printUsage() {
+		for argument in self.validArguments {
+			if argument.type == .FlagOption {
+
+			} else if argument.type == .SwitchOption {
+
+			} else if argument.type == .CommandOption {
+
+			}
+		}
+	}
 	/**
 	 * 	Starts parsing the given arguments.
 	 *
