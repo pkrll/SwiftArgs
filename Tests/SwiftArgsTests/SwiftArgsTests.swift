@@ -106,13 +106,15 @@ final class SwiftArgsTests: XCTestCase {
 	func testErrorOutput() {
 		let compose = CommandOption("compose")
 		let privacy = EnumOption<TestPrivacyType>(name: "Privacy", longFlag: "privacy")
+		let string 	= StringOption(name: "name", longFlag: "name")
 
-		let args = SwiftArgs(arguments: [compose, privacy])
+		let args = SwiftArgs(arguments: [compose, privacy, string])
 
 		func testInvalidArgument() throws { try args.parse(["--help"]) }
 		func testInvalidCommand() throws { try args.parse(["compose", "foo"]) }
 		func testInvalidValue() throws { try args.parse(["--privacy", "foo"]) }
-		func testMissingValue() throws { try args.parse(["--privacy"]) }
+		func testMissingValueEnum() throws { try args.parse(["--privacy"]) }
+		func testMissingValueString() throws { try args.parse(["--name"]) }
 
 		XCTAssertThrowsError(try testInvalidArgument()) { error in
 			let error = error as! SwiftArgsError
@@ -150,15 +152,28 @@ final class SwiftArgsTests: XCTestCase {
 			}
 		}
 
-		XCTAssertThrowsError(try testMissingValue()) { error in
+		XCTAssertThrowsError(try testMissingValueEnum()) { error in
 			let error = error as! SwiftArgsError
 
 			switch error {
 				case .missingValue:
-					XCTAssertTrue(true, "Failed: testMissingValue()")
+					XCTAssertTrue(true, "Failed: testMissingValueEnum()")
 					XCTAssertEqual(error.description, "--privacy requires a value")
 				default:
-					XCTAssertTrue(false, "Failed: testMissingValue()")
+					XCTAssertTrue(false, "Failed: testMissingValueEnum()")
+			}
+		}
+
+		XCTAssertThrowsError(try testMissingValueString()) { error in
+			let error = error as! SwiftArgsError
+
+			switch error {
+				case .missingValue:
+					XCTAssertTrue(true, "Failed: testMissingValueString()")
+					XCTAssertEqual(error.description, "--name requires a value")
+
+				default:
+					XCTAssertTrue(false, "Failed: testMissingValueString()")
 			}
 		}
 
