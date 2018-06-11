@@ -11,7 +11,11 @@ public class FlagOption<T: RawRepresentable>: Argument where T.RawValue == Strin
 	override public var description: String {
 		var description = ""
 
-		description += (self.shortFlag != nil) ? "-\(self.shortFlag!), " : ""
+		if let flag = self.shortFlag {
+			description += "-\(flag)"
+			if self.longFlag != nil { description += ", " }
+		}
+
 		description += (self.longFlag != nil) ? "--\(self.longFlag!)" : ""
 
 		return description
