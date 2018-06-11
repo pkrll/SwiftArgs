@@ -1,4 +1,4 @@
-.PHONY: test codecov
+.PHONY: test codecov xcodeproj clean
 SC=swift
 
 test:
@@ -9,3 +9,7 @@ codecov:
 
 xcodeproj:
 	swift package generate-xcodeproj
+
+clean:
+	rm -rf .build/*
+	rm -rf xcov_report/
