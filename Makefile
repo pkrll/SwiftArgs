@@ -5,7 +5,7 @@ test:
 	$(SC) test --configuration debug -Xswiftc "-D" -Xswiftc "DEBUG"
 
 codecov:
-	xcodebuild test -scheme SwiftArgs-Package -enableCodeCoverage YES -configuration debug
+	xcodebuild clean build test -scheme SwiftArgs-Package -enableCodeCoverage YES -configuration "Debug"
 
 xcodeproj:
 	swift package generate-xcodeproj
