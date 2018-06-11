@@ -30,45 +30,24 @@ internal class SwiftArgsParser {
 	func printUsage() -> String {
 		var description = ""
 
-		var count: [ArgumentType: Int] = [.CommandOption: 0, .FlagOption: 0, .SwitchOption: 0]
-		var table: [ArgumentType: [(name: String, help: String)]] = [.CommandOption: [], .FlagOption: [], .SwitchOption: []]
+		let commands = self.validArguments.filter { $0.type == .CommandOption }
+		let switches = self.validArguments.filter { $0.type == .SwitchOption }
+		let flags = self.validArguments.filter { $0.type == .FlagOption }
 
-		for argument in self.validArguments {
-			count[argument.type] = max(count[argument.type]!, argument.name.count)
-			table[argument.type]!.append((name: argument.description, help: argument.help ?? ""))
+		var swiftConsole = SwiftConsole()
+
+		if commands.count > 0 {
+			swiftConsole.addHeader("Commands:")
+			commands.forEach { swiftConsole.addRow(leftColumn: $0.name, rightColumn: $0.help) }
 		}
 
-		if table[.CommandOption]!.count > 0 {
-			description += "\nCommands: \n"
-			let count = count[.CommandOption]! + 5
-
-			for (name, usage) in table[.CommandOption]! {
-				let name  = String(format: "  %-\(count)s", (name as NSString).utf8String!)
-				let usage	= String(format: "%-\(count)s", (usage as NSString).utf8String!)
-
-				description += "\(name)\(usage)\n"
-			}
+		if switches.count > 0 || flags.count > 0 {
+			swiftConsole.addHeader("Optional arguments:")
+			switches.forEach { swiftConsole.addRow(leftColumn: $0.description, rightColumn: $0.help) }
+			flags.forEach { swiftConsole.addRow(leftColumn: $0.description, rightColumn: $0.help) }
 		}
 
-		if table[.FlagOption]!.count > 0 || table[.SwitchOption]!.count > 0 {
-			description += "\nOptional arguments: \n"
-
-			let count = max(count[.FlagOption]!, count[.SwitchOption]!) + 5
-
-			for (name, usage) in table[.FlagOption]! {
-				let name  = String(format: "  %-\(count)s", (name as NSString).utf8String!)
-				let usage = String(format: "%-\(count)s", (usage as NSString).utf8String!)
-
-				description += "\(name)\(usage)\n"
-			}
-
-			for (name, usage) in table[.SwitchOption]! {
-				let name  = String(format: "  %-\(count)s", (name as NSString).utf8String!)
-				let usage = String(format: "%-\(count)s", (usage as NSString).utf8String!)
-
-				description += "\(name)\(usage)\n"
-			}
-		}
+		description += swiftConsole.prettyFormat()
 
 		return description
 	}
