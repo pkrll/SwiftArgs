@@ -6,7 +6,7 @@
 
 <!-- ![logo](.assets/SwiftArgs.png) -->
 
-<img src=".assets/SwiftArgs.png" data-canonical-src=".assets/SwiftArgs.png" align="right" width="150px"/>
+<img src=".assets/SwiftArgs.png" data-canonical-src=".assets/SwiftArgs.png" align="right" width="250px"/>
 
 **SwiftArgs** is a small command line argument parser for Swift.
 
