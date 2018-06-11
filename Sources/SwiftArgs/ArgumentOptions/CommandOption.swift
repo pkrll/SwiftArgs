@@ -15,7 +15,7 @@ public class CommandOption: Argument {
 	public init(_ name: String, withArguments arguments: [Argument] = [], usageMessage: String? = nil) {
 		self.arguments = arguments
 		super.init(name: name, usageMessage: usageMessage)
-		self.type = .CommandOption
+		self.type = .commandOption
 	}
 
 	public convenience init(_ name: String, usageMessage: String? = nil) {

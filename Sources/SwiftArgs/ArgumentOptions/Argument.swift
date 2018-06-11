@@ -17,7 +17,7 @@ public class Argument: CustomStringConvertible {
 	public init(name: String, usageMessage help: String?) {
 		self.name = name
 		self.help = help
-		self.type = .Argument
+		self.type = .argument
 	}
 
 	internal func equals(_ compare: String) -> Bool {

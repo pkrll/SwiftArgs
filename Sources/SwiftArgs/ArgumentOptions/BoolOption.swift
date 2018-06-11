@@ -13,7 +13,7 @@ public class BoolOption: FlagOption<Bool> {
 	 */
 	override public init(name: String, shortFlag: String?, longFlag: String? = nil, usageMessage: String? = nil) {
 		super.init(name: name, shortFlag: shortFlag, longFlag: longFlag, usageMessage: usageMessage)
-		self.type = .BoolOption
+		self.type = .boolOption
 		try? self.setValue(false)
 	}
 

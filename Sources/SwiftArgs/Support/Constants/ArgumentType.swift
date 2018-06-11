@@ -4,10 +4,10 @@
 //
 enum ArgumentType: Hashable {
 
-	case Argument
-	case StringOption
-	case BoolOption
-	case EnumOption
-	case CommandOption
+	case argument
+	case stringOption
+	case boolOption
+	case enumOption
+	case commandOption
 
 }

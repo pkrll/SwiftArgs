@@ -14,7 +14,7 @@ public class EnumOption<T: RawRepresentable>: FlagOption<T>  where T.RawValue ==
 	 */
 	override public init(name: String, shortFlag: String?, longFlag: String? = nil, usageMessage: String? = nil) {
 		super.init(name: name, shortFlag: shortFlag, longFlag: longFlag, usageMessage: usageMessage)
-		self.type = .EnumOption
+		self.type = .enumOption
 	}
 
 	override internal func setValue(_ value: Any) throws {

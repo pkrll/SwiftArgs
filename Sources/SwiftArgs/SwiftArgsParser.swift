@@ -30,8 +30,8 @@ internal class SwiftArgsParser {
 	func printUsage() -> String {
 		var description = ""
 
-		let commands = self.validArguments.filter { $0.type == .CommandOption }
-		let flags = self.validArguments.filter { $0.type != .CommandOption }
+		let commands = self.validArguments.filter { $0.type == .commandOption }
+		let flags = self.validArguments.filter { $0.type != .commandOption }
 
 		var swiftConsole = SwiftConsole()
 
@@ -72,13 +72,13 @@ internal class SwiftArgsParser {
 	}
 
 	private func parse(_ argument: Argument) throws {
-		if argument.type == .StringOption {
+		if argument.type == .stringOption {
 			try self.parse(stringOption: argument)
-		} else if argument.type == .BoolOption {
+		} else if argument.type == .boolOption {
 			try self.parse(boolOption: argument)
-		} else if argument.type == .EnumOption {
+		} else if argument.type == .enumOption {
 			try self.parse(enumOption: argument)
-		} else if argument.type == .CommandOption {
+		} else if argument.type == .commandOption {
 			if let argument = argument as? CommandOption {
 				try self.parse(commandOption: argument)
 			}
