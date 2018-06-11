@@ -3,7 +3,10 @@
 [![cocoapod](https://img.shields.io/cocoapods/v/Swiftargs.svg)](https://cocoapods.org/pods/SwiftArgs)
 ![release](https://img.shields.io/github/release/pkrll/Swiftargs.svg)
 ![commits since latest release](https://img.shields.io/github/commits-since/pkrll/Swiftargs/latest.svg)
-# SwiftArgs
+
+<!-- ![logo](.assets/SwiftArgs.png) -->
+
+<img src=".assets/SwiftArgs.png" data-canonical-src=".assets/SwiftArgs.png" align="right" width="150px"/>
 
 **SwiftArgs** is a small command line argument parser for Swift.
 
@@ -121,3 +124,7 @@ if help.value! {
 	}
 }
 ```
+
+# Author
+
+SwiftArgs was created by *Ardalan Samimi*.
