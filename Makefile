@@ -6,3 +6,6 @@ test:
 
 codecov:
 	xcodebuild test -scheme SwiftArgs-Package -enableCodeCoverage YES -configuration debug
+
+xcodeproj:
+	swift package generate-xcodeproj
