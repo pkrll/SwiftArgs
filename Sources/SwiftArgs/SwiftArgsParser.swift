@@ -121,14 +121,4 @@ internal class SwiftArgsParser {
 
 	}
 
-	private func parse(flagOption: Argument) throws {
-		guard let argument = self.nextArgument else {
-			self.currentIndex -= 1
-			let flag = self.nextArgument ?? flagOption.name
-			throw SwiftArgsError.missingValue(flag)
-		}
-
-		try flagOption.setValue(argument)
-	}
-
 }
