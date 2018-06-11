@@ -79,7 +79,9 @@ internal class SwiftArgsParser {
 		} else if argument.type == .EnumOption {
 			try self.parse(enumOption: argument)
 		} else if argument.type == .CommandOption {
-			try self.parse(commandOption: argument as! CommandOption)
+			if let argument = argument as? CommandOption {
+				try self.parse(commandOption: argument)
+			}
 		}
 	}
 
