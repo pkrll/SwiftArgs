@@ -31,8 +31,7 @@ internal class SwiftArgsParser {
 		var description = ""
 
 		let commands = self.validArguments.filter { $0.type == .CommandOption }
-		// let switches = self.validArguments.filter { $0.type == .SwitchOption }
-		// let flags = self.validArguments.filter { $0.type == .FlagOption }
+		let flags = self.validArguments.filter { $0.type != .CommandOption }
 
 		var swiftConsole = SwiftConsole()
 
@@ -41,11 +40,10 @@ internal class SwiftArgsParser {
 			commands.forEach { swiftConsole.addRow(leftColumn: $0.name, rightColumn: $0.help) }
 		}
 
-		// if switches.count > 0 || flags.count > 0 {
-		// 	swiftConsole.addHeader("Optional arguments:")
-		// 	switches.forEach { swiftConsole.addRow(leftColumn: $0.description, rightColumn: $0.help) }
-		// 	flags.forEach { swiftConsole.addRow(leftColumn: $0.description, rightColumn: $0.help) }
-		// }
+		if flags.count > 0 {
+			swiftConsole.addHeader("Optional arguments:")
+			flags.forEach { swiftConsole.addRow(leftColumn: $0.description, rightColumn: $0.help) }
+		}
 
 		description += swiftConsole.prettyFormat()
 
