@@ -4,17 +4,27 @@
 ![release](https://img.shields.io/github/release/pkrll/Swiftargs.svg)
 ![commits since latest release](https://img.shields.io/github/commits-since/pkrll/Swiftargs/latest.svg)
 
-<!-- ![logo](.assets/SwiftArgs.png) -->
-
 <img src=".assets/SwiftArgs.png" data-canonical-src=".assets/SwiftArgs.png" align="right" width="250px"/>
 
-**SwiftArgs** is a small command line argument parser for Swift.
+**SwiftArgs** is a small Swift framework for creating simple command line interfaces.
+
+* [Installation](#installation)
+	* [Swift Package Manager](#swift-package-manager)
+* [Usage](#usage)
+	* [CommandOption](#commandoption)
+	* [BoolOption](#booloption)
+	* [StringOption](#stringoption)
+	* [EnumOption](#enumoption)
+	* [Example](#example)
+* [Acknowledgements](#acknowledgements)
 
 ## Installation
 
-Add SwiftArgs as a dependency in ``Package.swift``:
+**SwiftArgs** is currently only available using Swift Package Manager.
 
-#### Swift Package Manager
+##### Swift Package Manager
+
+Add SwiftArgs as a dependency in ``Package.swift``:
 
 ```swift
 // Package.swift
@@ -125,6 +135,10 @@ if help.value! {
 }
 ```
 
-# Author
+## Acknowledgements
+
+This framework is, in its API, heavily inspired by the [CommandLineKit](https://github.com/jatoben/CommandLine) framework.
+
+## Author
 
 SwiftArgs was created by *Ardalan Samimi*.
