@@ -4,9 +4,18 @@
 //
 public class FlagOption<T: RawRepresentable>: Argument where T.RawValue == String {
 
-	let shortFlag: String
-	let longFlag: String
+	let shortFlag: String?
+	let longFlag: String?
 	private(set) public var value: T?
+
+	override public var description: String {
+		var description = ""
+
+		description += (self.shortFlag != nil) ? "-\(self.shortFlag!), " : ""
+		description += (self.longFlag != nil) ? "--\(self.longFlag!)" : ""
+
+		return description
+	}
 	/**
 	 *  FlagOption represents a flag argument (i.e. --flag).
 	 *
@@ -14,10 +23,10 @@ public class FlagOption<T: RawRepresentable>: Argument where T.RawValue == Strin
 	 *  - Parameter shortFlag: The short flag to be used.
 	 *  - Parameter longFlag: The long flag to be used.
 	 */
-	public init(name: String, shortFlag: String, longFlag: String = "") {
+	public init(name: String, shortFlag: String?, longFlag: String? = nil, usageMessage: String? = nil) {
 		self.shortFlag = shortFlag
 		self.longFlag = longFlag
-		super.init(name: name)
+		super.init(name: name, usageMessage: usageMessage)
 
 		self.type = .FlagOption
 	}
@@ -27,12 +36,15 @@ public class FlagOption<T: RawRepresentable>: Argument where T.RawValue == Strin
 	 *  - Parameter name: Name of the option
 	 *  - Parameter longFlag: The long flag to be used.
 	 */
-	public convenience init(name: String, longFlag: String) {
-		self.init(name: name, shortFlag: "", longFlag: longFlag)
+	public convenience init(name: String, longFlag: String, usageMessage: String? = nil) {
+		self.init(name: name, shortFlag: nil, longFlag: longFlag, usageMessage: usageMessage)
 	}
 
 	internal override func equals(_ compare: String) -> Bool {
-		return "-\(self.shortFlag)" == compare || "--\(self.longFlag)" == compare
+		let sFlag = (self.shortFlag != nil) ? "-\(self.shortFlag!)" : ""
+		let lFlag = (self.longFlag != nil) ? "--\(self.longFlag!)" : ""
+
+		return sFlag == compare || lFlag == compare
 	}
 
 	internal override func setValue(_ value: Any) throws {
@@ -41,7 +53,10 @@ public class FlagOption<T: RawRepresentable>: Argument where T.RawValue == Strin
 		if let value = T(rawValue: value) {
 			self.value = value
 		} else {
-			throw SwiftArgsError.invalidValue(value, for: "-\(self.shortFlag) (--\(self.longFlag))")
+			var flags = (self.shortFlag != nil) ? "-\(self.shortFlag!), " : ""
+			flags += (self.longFlag != nil) ? "--\(self.longFlag!)" : ""
+
+			throw SwiftArgsError.invalidValue(value, for: flags)
 		}
 	}
 

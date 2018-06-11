@@ -10,8 +10,8 @@ public class SwitchOption: Argument {
 	 *
 	 *  - Parameter name: Name of the option.
 	 */
-	public override init(name: String) {
-		super.init(name: name)
+	public override init(name: String, usageMessage: String? = nil) {
+		super.init(name: name, usageMessage: usageMessage)
 
 		self.type = .SwitchOption
 	}

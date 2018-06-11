@@ -12,10 +12,14 @@ public class CommandOption: Argument {
 	 *  - Parameter name: Name of the option
 	 *  - Parameter withArguments: List of sub arguments.
 	 */
-	public init(_ name: String, withArguments arguments: [Argument]) {
+	public init(_ name: String, withArguments arguments: [Argument] = [], usageMessage: String? = nil) {
 		self.arguments = arguments
-		super.init(name: name)
+		super.init(name: name, usageMessage: usageMessage)
 		self.type = .CommandOption
+	}
+
+	public convenience init(_ name: String, usageMessage: String? = nil) {
+		self.init(name, withArguments: [], usageMessage: usageMessage)
 	}
 
 	internal func takesArgument(_ argument: String) -> Bool {
