@@ -2,6 +2,8 @@
 // SwiftArgsParser.swift
 // Created by Ardalan Samimi on 2018-06-10
 //
+import Foundation
+
 internal class SwiftArgsParser {
 
 	private let validArguments: [Argument]
@@ -25,16 +27,50 @@ internal class SwiftArgsParser {
 		self.validArguments = arguments
 	}
 
-	func printUsage() {
+	func printUsage() -> String {
+		var description = ""
+
+		var count: [ArgumentType: Int] = [.CommandOption: 0, .FlagOption: 0, .SwitchOption: 0]
+		var table: [ArgumentType: [(name: String, help: String)]] = [.CommandOption: [], .FlagOption: [], .SwitchOption: []]
+
 		for argument in self.validArguments {
-			if argument.type == .FlagOption {
+			count[argument.type] = max(count[argument.type]!, argument.name.count)
+			table[argument.type]!.append((name: argument.description, help: argument.help ?? ""))
+		}
 
-			} else if argument.type == .SwitchOption {
+		if table[.CommandOption]!.count > 0 {
+			description += "\nCommands: \n"
+			let count = count[.CommandOption]! + 5
 
-			} else if argument.type == .CommandOption {
+			for (name, usage) in table[.CommandOption]! {
+				let name  = String(format: "  %-\(count)s", (name as NSString).utf8String!)
+				let usage	= String(format: "%-\(count)s", (usage as NSString).utf8String!)
 
+				description += "\(name)\(usage)\n"
 			}
 		}
+
+		if table[.FlagOption]!.count > 0 || table[.SwitchOption]!.count > 0 {
+			description += "\nOptional arguments: \n"
+
+			let count = max(count[.FlagOption]!, count[.SwitchOption]!) + 5
+
+			for (name, usage) in table[.FlagOption]! {
+				let name  = String(format: "  %-\(count)s", (name as NSString).utf8String!)
+				let usage = String(format: "%-\(count)s", (usage as NSString).utf8String!)
+
+				description += "\(name)\(usage)\n"
+			}
+
+			for (name, usage) in table[.SwitchOption]! {
+				let name  = String(format: "  %-\(count)s", (name as NSString).utf8String!)
+				let usage = String(format: "%-\(count)s", (usage as NSString).utf8String!)
+
+				description += "\(name)\(usage)\n"
+			}
+		}
+
+		return description
 	}
 	/**
 	 * 	Starts parsing the given arguments.

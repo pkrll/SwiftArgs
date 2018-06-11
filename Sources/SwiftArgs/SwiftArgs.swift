@@ -22,7 +22,7 @@ public class SwiftArgs {
 	}
 
 	public func printUsage(debugMode: Bool = false) {
-		var description = "Usage: APP_NAME <argument>\n"
+		var description = "Usage: APP_NAME <command> <argument>\n"
 
 		description += "\(self.parser.printUsage())"
 
