@@ -10,6 +10,9 @@ codecov:
 xcodeproj:
 	swift package generate-xcodeproj
 
+sonarscanner:
+	sonar-scanner
+
 clean:
 	rm -rf .build/*
 	rm -rf xcov_report/
