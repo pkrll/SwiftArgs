@@ -75,7 +75,7 @@ internal class SwiftArgsParser {
 		if argument.type == .StringOption {
 			try self.parse(stringOption: argument)
 		} else if argument.type == .BoolOption {
-			self.parse(boolOption: argument)
+			try self.parse(boolOption: argument)
 		} else if argument.type == .EnumOption {
 			try self.parse(enumOption: argument)
 		} else if argument.type == .CommandOption {
@@ -83,8 +83,8 @@ internal class SwiftArgsParser {
 		}
 	}
 
-	private func parse(boolOption: Argument) {
-		try! boolOption.setValue(true)
+	private func parse(boolOption: Argument) throws {
+		try boolOption.setValue(true)
 	}
 
 	private func parse(stringOption: Argument) throws {
@@ -116,7 +116,7 @@ internal class SwiftArgsParser {
 
 			try self.parse(subArgument)
 
-			try! commandOption.setValue(commandOption[argument])
+			try commandOption.setValue(commandOption[argument])
 		}
 
 	}

@@ -24,6 +24,6 @@ public class Argument: CustomStringConvertible {
 		return self.name == compare
 	}
 
-	internal func setValue(_ argument: Any) throws { }
+	internal func setValue(_ argument: Any) throws { /* Intentionally unimplemented... */ }
 
 }

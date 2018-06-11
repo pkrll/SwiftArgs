@@ -11,16 +11,18 @@ public class FlagOption<T>: Argument {
 	private(set) public var value: T?
 
 	override public var description: String {
-		var description = ""
+		var returnValue = ""
 
 		if let flag = self.shortFlag {
-			description += "-\(flag)"
-			if self.longFlag != nil { description += ", " }
+			returnValue += "-\(flag)"
+			if self.longFlag != nil {
+				returnValue += ", "
+			}
 		}
 
-		description += (self.longFlag != nil) ? "--\(self.longFlag!)" : ""
+		returnValue += (self.longFlag != nil) ? "--\(self.longFlag!)" : ""
 
-		return description
+		return returnValue
 	}
 	/**
 	 *  FlagOption represents a flag argument (i.e. --flag).
