@@ -14,5 +14,6 @@ sonarscanner:
 	sonar-scanner
 
 clean:
-	rm -rf .build/*
+	rm -rf .build
 	rm -rf xcov_report/
+	rm -rf .scannerwork
