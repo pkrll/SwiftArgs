@@ -22,13 +22,13 @@ public class FlagOption<T>: Argument {
 
 		return description
 	}
-
 	/**
 	 *  FlagOption represents a flag argument (i.e. --flag).
 	 *
 	 *  - Parameter name: Name of the option
 	 *  - Parameter shortFlag: The short flag to be used.
 	 *  - Parameter longFlag: The long flag to be used.
+	 *  - Parameter usageMessage: The description for the option.
 	 */
 	public init(name: String, shortFlag: String?, longFlag: String? = nil, usageMessage: String? = nil) {
 		self.shortFlag = shortFlag
@@ -40,19 +40,20 @@ public class FlagOption<T>: Argument {
 	 *
 	 *  - Parameter name: Name of the option
 	 *  - Parameter longFlag: The long flag to be used.
+	 *  - Parameter usageMessage: The description for the option.
 	 */
 	public convenience init(name: String, longFlag: String, usageMessage: String? = nil) {
 		self.init(name: name, shortFlag: nil, longFlag: longFlag, usageMessage: usageMessage)
 	}
 
-	internal override func equals(_ compare: String) -> Bool {
+	override internal func equals(_ compare: String) -> Bool {
 		let sFlag = (self.shortFlag != nil) ? "-\(self.shortFlag!)" : ""
 		let lFlag = (self.longFlag != nil) ? "--\(self.longFlag!)" : ""
 
 		return sFlag == compare || lFlag == compare
 	}
 
-	internal override func setValue(_ value: Any) throws {
+	override internal func setValue(_ value: Any) throws {
 		guard let value = value as? T else { return }
 		self.value = value
 	}
