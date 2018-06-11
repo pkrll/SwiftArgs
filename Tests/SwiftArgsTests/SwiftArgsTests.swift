@@ -18,42 +18,37 @@ final class SwiftArgsTests: XCTestCase {
 		("testSwiftArgs", testSwiftArgs),
 		("testSwiftArgs2", testSwiftArgs2),
 		("testSwiftArgsError", testSwiftArgsError),
+		("testSwiftArgsPrintUsage", testSwiftArgsPrintUsage),
 	]
 
 	func testSwiftArgs() {
-		// let help = SwitchOption(name: "--help", usageMessage: "Outputs usage information")
-		// let vers = SwitchOption(name: "--version", usageMessage: "Outputs version information")
-		// let type = FlagOption<PrivacyLevel>(name: "type", shortFlag: "t", longFlag: "type", usageMessage: "Sets the privacy level")
-		//
-		// let clone = CommandOption("clone", usageMessage: "Clone a repository into a new directory")
-		// let inits = CommandOption("init", usageMessage: "Create an empty Git repository or reinitialize an existing one")
-		// let add		= CommandOption("add", usageMessage: "Add file contents to the index")
-		// let mv		= CommandOption("mv", usageMessage: "Move or rename a file, a directory, or a symlink")
-		// let reset = CommandOption("mv", usageMessage: "Reset current HEAD to the specified state")
-		// let rm		= CommandOption("rm", usageMessage: "Remove files from the working tree and from the index")
-		//
-		// let args = SwiftArgs(arguments: [help, vers, type, clone, inits, add, mv, reset, rm])
-		//
-		// args.printUsage()
-		//
-		// do {
-		// 	try args.parse(["clone"])
-		// 	print(clone.value)
-			// try args.parse(["init", "library"])
-			// XCTAssertTrue(library.value)
-			//
-			// try args.parse(["init", "folder", "--privacy", "public"])
-			//
-			// if let privacy = folder.value as? FlagOption<PrivacyLevel> {
-			// 	XCTAssertEqual(privacy.value, PrivacyLevel.Public)
-			// } else {
-			// 	XCTAssertTrue(false)
-			// }
-		//
-		// } catch {
-		// 	XCTAssertTrue(false, "\(error)")
-		// }
+		let clean 	= SwitchOption(name: "clean")
+		let view 		= FlagOption<View>(name: "View", shortFlag: "v", longFlag: "view")
+		let privacy = FlagOption<PrivacyLevel>(name: "Privacy", longFlag: "privacy")
+		let library = SwitchOption(name: "library")
+		let folder 	= CommandOption("folder", withArguments: [privacy])
+		let initOpt	= CommandOption("init", withArguments: [folder, library])
 
+		let args = SwiftArgs(arguments: [clean, view, initOpt])
+
+		do {
+			try args.parse(["clean"])
+			XCTAssertTrue(clean.value)
+
+			try args.parse(["init", "library"])
+			XCTAssertTrue(library.value)
+
+			try args.parse(["init", "folder", "--privacy", "public"])
+
+			if let privacy = folder.value as? FlagOption<PrivacyLevel> {
+				XCTAssertEqual(privacy.value, PrivacyLevel.Public)
+			} else {
+				XCTAssertTrue(false)
+			}
+
+		} catch {
+			XCTAssertTrue(false, "\(error)")
+		}
 	}
 
 	func testSwiftArgs2() {
@@ -86,7 +81,6 @@ final class SwiftArgsTests: XCTestCase {
 		enum Flags: String {
 			case Bar = "bar"
 		}
-
 
 		let compose = CommandOption("compose", withArguments: [])
 		let flags = FlagOption<Flags>(name: "flags", longFlag: "type")
@@ -134,6 +128,37 @@ final class SwiftArgsTests: XCTestCase {
 			}
 		}
 
+	}
+
+	func testSwiftArgsPrintUsage() {
+		let help = SwitchOption(name: "--help", usageMessage: "Outputs usage information")
+		let type = FlagOption<PrivacyLevel>(name: "type", shortFlag: "t", longFlag: "type", usageMessage: "Sets the privacy level")
+
+		let clone = CommandOption("clone", usageMessage: "Clone a repository into a new directory")
+		let inits = CommandOption("init", usageMessage: "Create an empty Git repository or reinitialize an existing one")
+		let add		= CommandOption("add", usageMessage: "Add file contents to the index")
+		let mv		= CommandOption("mv", usageMessage: "Move or rename a file, a directory, or a symlink")
+		let reset = CommandOption("mv", usageMessage: "Reset current HEAD to the specified state")
+		let rm		= CommandOption("rm", usageMessage: "Remove files from the working tree and from the index")
+
+		let args = SwiftArgs(arguments: [help, type, clone, inits, add, mv, reset, rm])
+
+		args.printUsage(debugMode: true)
+
+		XCTAssertTrue(args.outputStream.contains("Usage:"))
+		XCTAssertTrue(args.outputStream.contains("Commands:\n"))
+		XCTAssertTrue(args.outputStream.contains("clone"))
+		XCTAssertTrue(args.outputStream.contains("init"))
+		XCTAssertTrue(args.outputStream.contains("add"))
+		XCTAssertTrue(args.outputStream.contains("mv"))
+		XCTAssertTrue(args.outputStream.contains("mv"))
+		XCTAssertTrue(args.outputStream.contains("rm"))
+		XCTAssertTrue(args.outputStream.contains("Clone a repository into a new directory"))
+		XCTAssertTrue(args.outputStream.contains("Create an empty Git repository or reinitialize an existing one"))
+		XCTAssertTrue(args.outputStream.contains("Add file contents to the index"))
+		XCTAssertTrue(args.outputStream.contains("Move or rename a file, a directory, or a symlink"))
+		XCTAssertTrue(args.outputStream.contains("Reset current HEAD to the specified state"))
+		XCTAssertTrue(args.outputStream.contains("Remove files from the working tree and from the index"))
 	}
 
 }
