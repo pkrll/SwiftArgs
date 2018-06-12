@@ -5,7 +5,8 @@
 public class CommandOption: Argument {
 
 	private let arguments: [Argument]
-	private(set) public var value: Argument?
+	private(set) public var argument: Argument?
+	private(set) public var value: Bool = false
 	/**
 	 *  CommandOption represents a command (i.e. init).
 	 *
@@ -30,9 +31,13 @@ public class CommandOption: Argument {
 		return self.arguments[argument]
 	}
 
-	internal override func setValue(_ value: Any?) throws {
-		guard let value = value as? Argument else { return }
+	internal override func setValue(_ value: Any) throws {
+		guard let value = value as? Bool else { return }
 		self.value = value
+	}
+
+	internal func setArgument(_ argument: Argument) {
+		self.argument = argument
 	}
 
 }

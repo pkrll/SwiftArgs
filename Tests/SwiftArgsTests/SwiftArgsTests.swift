@@ -40,7 +40,7 @@ final class SwiftArgsTests: XCTestCase {
 		do {
 			try args.parse(["init", "library", "-t", "type1"])
 
-			if let lib = initOpt.value as? CommandOption, let type = lib.value as? EnumOption<TestEnumType> {
+			if let lib = initOpt.argument as? CommandOption, let type = lib.argument as? EnumOption<TestEnumType> {
 				XCTAssertEqual(type.value, TestEnumType.type1, "Failed: init library -t type1")
 			} else {
 				XCTAssertTrue(false, "Failed: init library -t type1")
@@ -51,7 +51,7 @@ final class SwiftArgsTests: XCTestCase {
 			try args.parse(["init", "executable", "--privacy", "public"])
 			XCTAssertEqual(privacy.value, TestPrivacyType.publicType)
 
-			if let executable = initOpt.value as? CommandOption, let privacy = executable.value as? EnumOption<TestPrivacyType> {
+			if let exec = initOpt.argument as? CommandOption, let privacy = exec.argument as? EnumOption<TestPrivacyType> {
 				XCTAssertEqual(privacy.value, TestPrivacyType.publicType, "Failed: init executable --privacy public")
 			} else {
 				XCTAssertTrue(false, "Failed: init executable --privacy public")
@@ -77,7 +77,7 @@ final class SwiftArgsTests: XCTestCase {
 		do {
 			try args.parse(["command1", "--lang", "python"])
 
-			if let flags = command1.value as? EnumOption<TestLanguage> {
+			if let flags = command1.argument as? EnumOption<TestLanguage> {
 				XCTAssertEqual(flags.value, TestLanguage.python, "Failed: command1 --lang python")
 			} else {
 				XCTAssertTrue(false, "Failed: command1 --lang python")
@@ -98,6 +98,9 @@ final class SwiftArgsTests: XCTestCase {
 
 			try args.parse(["command2", "-s", "foobar"])
 			XCTAssertEqual(stringOpt.value, "foobar", "Failed: command2 -s foobar")
+
+			try args.parse(["command1"])
+			XCTAssertTrue(command1.value)
 		} catch {
 			XCTAssertTrue(false, "\(error)")
 		}

@@ -108,6 +108,8 @@ internal class SwiftArgsParser {
 	}
 
 	private func parse(commandOption: CommandOption) throws {
+		try commandOption.setValue(true)
+
 		while let argument = self.nextArgument {
 			guard commandOption.takesArgument(argument), let subArgument = commandOption[argument] else {
 				self.currentIndex -= 1
@@ -116,7 +118,7 @@ internal class SwiftArgsParser {
 
 			try self.parse(subArgument)
 
-			try commandOption.setValue(commandOption[argument])
+			commandOption.setArgument(subArgument)
 		}
 
 	}
