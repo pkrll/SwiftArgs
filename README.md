@@ -31,7 +31,7 @@ Add ``SwiftArgs`` as a dependency in ``Package.swift``:
 // Package.swift
 
 dependencies: [
-    .package(url: "https://github.com/pkrll/SwiftArgs", from: "0.4.0")
+    .package(url: "https://github.com/pkrll/SwiftArgs", from: "0.5.0")
 ]
 
 ```
@@ -41,7 +41,7 @@ dependencies: [
 Add ``SwiftArgs`` to your Podfile:
 
 ```ruby
-pod 'SwiftArgs', '~> 0.4'
+pod 'SwiftArgs', '~> 0.5'
 ```
 
 ## Usage
