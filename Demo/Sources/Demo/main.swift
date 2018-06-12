@@ -6,14 +6,20 @@ enum BuildType: String {
 }
 
 let help = BoolOption(name: "help", shortFlag: "h", longFlag: "help", usageMessage: "Display available options")
-let version = BoolOption(name: "version", shortFlag: "v", longFlag: "version", usageMessage: "Display version information")
+let version = BoolOption(name: "version",
+										shortFlag: "v",
+										 longFlag: "version",
+								 usageMessage: "Display version information")
 
-let buildType = EnumOption<BuildType>(name: "BuildType", shortFlag: "t", longFlag: "type", usageMessage: "Specify the build configuration: debug|release")
+let buildType = EnumOption<BuildType>(name: "BuildType",
+																 shortFlag: "t",
+																 	longFlag: "type",
+															usageMessage: "Specify the build configuration: debug|release")
 
 let clean = CommandOption("clean", usageMessage: "Clean up any build artifacts")
-let build = CommandOption("build", withArguments: [buildType], usageMessage: "Build the project")
-let test = CommandOption("test", withArguments: [buildType], usageMessage: "Test the project")
-let run = CommandOption("run", withArguments: [buildType], usageMessage: "Execute the project")
+let build = CommandOption("build", withArguments: [help, buildType], usageMessage: "Build the project")
+let test = CommandOption("test", withArguments: [help, buildType], usageMessage: "Test the project")
+let run = CommandOption("run", withArguments: [help, buildType], usageMessage: "Execute the project")
 
 let args = SwiftArgs(arguments: [help, version, clean, build, test, run])
 
@@ -29,7 +35,13 @@ do {
 * 	(-v --version) was specified with the value property.
 */
 if help.value! {
-	args.printUsage()
+	var argument: Argument? = nil
+
+	if build.value { argument = build }
+	if test.value { argument = test }
+	if run.value { argument = run }
+
+	args.printUsage(argument)
 } else if version.value! {
 	print("SwiftArgsDemo v1.0")
 } else {
