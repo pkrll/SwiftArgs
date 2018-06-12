@@ -4,44 +4,54 @@
 //
 public extension String {
 
-	internal func setColor(_ color: SwiftArgsColor) -> String {
-		return "\(color.rawValue)\(self)"
+	internal mutating func setColor(_ color: SwiftArgsColor, toWords words: String...) {
+		var string = self
+
+		for word in words {
+			string = string.replacingOccurrences(of: word, with: word.colorize(color))
+		}
+
+		self = string
+	}
+
+	internal func colorize(_ color: SwiftArgsColor) -> String {
+		return "\(color.rawValue)\(self)\(SwiftArgsColor.default.rawValue)"
 	}
 
 	public var black: String {
-		return self.setColor(.black)
+		return self.colorize(.black)
 	}
 
 	public var blue: String {
-		return self.setColor(.blue)
+		return self.colorize(.blue)
 	}
 
 	public var cyan: String {
-		return self.setColor(.cyan)
+		return self.colorize(.cyan)
 	}
 
 	public var green: String {
-		return self.setColor(.green)
+		return self.colorize(.green)
 	}
 
 	public var magenta: String {
-		return self.setColor(.magenta)
+		return self.colorize(.magenta)
 	}
 
 	public var red: String {
-		return self.setColor(.red)
+		return self.colorize(.red)
 	}
 
 	public var white: String {
-		return self.setColor(.white)
+		return self.colorize(.white)
 	}
 
 	public var yellow: String {
-		return self.setColor(.yellow)
+		return self.colorize(.yellow)
 	}
 
 	public var `default`: String {
-		return self.setColor(.`default`)
+		return self.colorize(.`default`)
 	}
 
 }
