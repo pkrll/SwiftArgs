@@ -18,11 +18,11 @@ internal class SwiftArgsParser {
 
 		return currentArgument
 	}
-	/**
-	 *  Initializes the argument parser.
-	 *
-	 *  - Parameter arguments: List of valid arguments.
-	 */
+  /**
+   *  Initializes the argument parser.
+   *
+   *  - Parameter arguments: List of valid arguments.
+   */
 	init(arguments: [Argument]) {
 		self.validArguments = arguments
 	}
@@ -57,14 +57,14 @@ internal class SwiftArgsParser {
 
 		return description
 	}
-	/**
-	 * 	Starts parsing the given arguments.
-	 *
-	 * 	- Parameter arguments: A list of arguments to parse (optional).
-	 *
-	 * 	- Throws: `SwiftArgsError.invalidArgument` if the `arguments` parameter
-	 * 		contains arguments that does not match those in `validArguments`.
-	 */
+  /**
+   *   Starts parsing the given arguments.
+   *
+   *   - Parameter arguments: A list of arguments to parse (optional).
+   *
+   *   - Throws: `SwiftArgsError.invalidArgument` if the `arguments` parameter
+   *     contains arguments that does not match those in `validArguments`.
+   */
 	func start(_ arguments: [String]) throws {
 		self.givenArguments = arguments
 		self.currentIndex = 0
@@ -77,6 +77,16 @@ internal class SwiftArgsParser {
 			try self.parse(argument)
 		}
 
+		for argument in self.validArguments {
+			try argument.validate()
+		}
+
+		// let requiredArguments = self.validArguments.filter { $0.validate() == false }
+
+		// if requiredArguments.count > 0 {
+		// 	let missing = requiredArguments.compactMap { $0.description }.joined(separator: ", ")
+		// 	throw SwiftArgsError.missingRequiredArgument(missing)
+		// }
 	}
 
 	private func parse(_ argument: Argument) throws {

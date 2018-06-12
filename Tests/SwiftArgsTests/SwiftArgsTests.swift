@@ -23,7 +23,8 @@ final class SwiftArgsTests: XCTestCase {
 		("testNestedArguments", testNestedArguments),
 		("testFlagOptions", testFlagOptions),
 		("testErrorOutput", testErrorOutput),
-		("testPrintUsage", testPrintUsage)
+		("testPrintUsage", testPrintUsage),
+		("testRequiredArguments", testRequiredArguments)
 	]
 
 	func testNestedArguments() {
@@ -189,6 +190,45 @@ final class SwiftArgsTests: XCTestCase {
 		XCTAssertTrue(args.outputStream.contains("Move or rename a file, a directory, or a symlink"))
 		XCTAssertTrue(args.outputStream.contains("Reset current HEAD to the specified state"))
 		XCTAssertTrue(args.outputStream.contains("Remove files from the working tree and from the index"))
+	}
+
+	func testRequiredArguments() {
+		let help = BoolOption(
+			name: "help",
+			shortFlag: "h",
+			longFlag: "help",
+			description: "Outputs usage information")
+
+		let type = EnumOption<TestPrivacyType>(
+			name: "type",
+			longFlag: "type",
+			description: "Sets the privacy level",
+			isRequired: true)
+
+		let inits = CommandOption("init", withArguments: [help, type], isRequired: true)
+		let add		= CommandOption("add", description: "Add file contents to the index")
+
+		let args = SwiftArgs(arguments: [inits, add])
+
+		do {
+			try args.parse([])
+			XCTAssertTrue(false, "Failed: Missing required argument not missing")
+		} catch let actualError as SwiftArgsError {
+			let expectedError = SwiftArgsError.missingRequiredArgument("init").description
+			XCTAssertEqual(actualError.description, expectedError)
+		} catch {
+			XCTAssertTrue(false, "Failed: \(error)")
+		}
+
+		do {
+			try args.parse(["init"])
+			XCTAssertTrue(false, "Failed: Missing required argument not missing")
+		} catch let actualError as SwiftArgsError {
+			let expectedError = SwiftArgsError.missingRequiredArgument("--type").description
+			XCTAssertEqual(actualError.description, expectedError)
+		} catch {
+			XCTAssertTrue(false, "Failed: \(error)")
+		}
 	}
 
 }
