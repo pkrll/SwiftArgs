@@ -229,6 +229,13 @@ final class SwiftArgsTests: XCTestCase {
 		} catch {
 			XCTAssertTrue(false, "Failed: \(error)")
 		}
+
+		do {
+			try args.parse(["init", "--type", "public"])
+			XCTAssertTrue(true, "Failed: Required argument is missing")
+		} catch {
+			XCTAssertTrue(false, "Failed: \(error)")
+		}
 	}
 
 }
