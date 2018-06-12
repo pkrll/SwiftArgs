@@ -3,7 +3,6 @@
 [![sonar](https://sonarcloud.io/api/project_badges/measure?project=SwiftArgs&metric=alert_status)](https://sonarcloud.io/dashboard?id=SwiftArgs)
 [![cocoapod](https://img.shields.io/cocoapods/v/Swiftargs.svg)](https://cocoapods.org/pods/SwiftArgs)
 ![release](https://img.shields.io/github/release/pkrll/Swiftargs.svg)
-![commits since latest release](https://img.shields.io/github/commits-since/pkrll/Swiftargs/latest.svg)
 
 <img src=".assets/SwiftArgs.png" data-canonical-src=".assets/SwiftArgs.png" align="right" width="250px"/>
 
