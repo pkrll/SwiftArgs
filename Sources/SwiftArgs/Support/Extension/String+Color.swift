@@ -2,7 +2,7 @@
 // String+Color.swift
 // Created by Ardalan Samimi on 2018-06-12
 //
-public extension String {
+internal extension String {
 
 	internal mutating func setColor(_ color: ANSIColor, style: ANSIAttribute = .normal, toWords words: String...) {
 		var string = self
@@ -24,39 +24,39 @@ public extension String {
 		return "\(startCode)\(self)\(endCode)"
 	}
 
-	public var black: String {
+	internal var black: String {
 		return self.colorize(.black)
 	}
 
-	public var blue: String {
+	internal var blue: String {
 		return self.colorize(.blue)
 	}
 
-	public var cyan: String {
+	internal var cyan: String {
 		return self.colorize(.cyan)
 	}
 
-	public var green: String {
+	internal var green: String {
 		return self.colorize(.green)
 	}
 
-	public var magenta: String {
+	internal var magenta: String {
 		return self.colorize(.magenta)
 	}
 
-	public var red: String {
+	internal var red: String {
 		return self.colorize(.red)
 	}
 
-	public var white: String {
+	internal var white: String {
 		return self.colorize(.white)
 	}
 
-	public var yellow: String {
+	internal var yellow: String {
 		return self.colorize(.yellow)
 	}
 
-	public var `default`: String {
+	internal var `default`: String {
 		return self.colorize(.`default`)
 	}
 
