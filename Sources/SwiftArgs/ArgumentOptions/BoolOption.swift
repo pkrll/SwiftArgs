@@ -23,7 +23,7 @@ public class BoolOption: FlagOption<Bool> {
 	}
 
 	override internal func validate() throws {
-		if self.isRequired && !self.value {
+		if self.isRequired && !self.value! {
 			throw SwiftArgsError.missingRequiredArgument(self.description)
 		}
 	}
