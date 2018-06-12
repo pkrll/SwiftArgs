@@ -1,20 +1,20 @@
 import XCTest
 import SwiftArgs
 
-fileprivate enum TestEnumType: String {
-	case Type1 = "type1"
-	case Type2 = "type2"
-	case Type3 = "type3"
+private enum TestEnumType: String {
+	case type1
+	case type2
+	case type3
 }
 
-fileprivate enum TestPrivacyType: String {
-	case Private = "private"
-	case Public = "public"
+private enum TestPrivacyType: String {
+	case privateType = "private"
+	case publicType = "public"
 }
 
-fileprivate enum TestLanguage: String {
-	case C = "c"
-	case Python = "python"
+private enum TestLanguage: String {
+	case cLang = "c"
+	case python
 }
 
 final class SwiftArgsTests: XCTestCase {
@@ -23,7 +23,7 @@ final class SwiftArgsTests: XCTestCase {
 		("testNestedArguments", testNestedArguments),
 		("testFlagOptions", testFlagOptions),
 		("testErrorOutput", testErrorOutput),
-		("testPrintUsage", testPrintUsage),
+		("testPrintUsage", testPrintUsage)
 	]
 
 	func testNestedArguments() {
@@ -41,7 +41,7 @@ final class SwiftArgsTests: XCTestCase {
 			try args.parse(["init", "library", "-t", "type1"])
 
 			if let lib = initOpt.value as? CommandOption, let type = lib.value as? EnumOption<TestEnumType> {
-				XCTAssertEqual(type.value, TestEnumType.Type1, "Failed: init library -t type1")
+				XCTAssertEqual(type.value, TestEnumType.type1, "Failed: init library -t type1")
 			} else {
 				XCTAssertTrue(false, "Failed: init library -t type1")
 			}
@@ -49,10 +49,10 @@ final class SwiftArgsTests: XCTestCase {
 			XCTAssertEqual(privacy.value, nil)
 
 			try args.parse(["init", "executable", "--privacy", "public"])
-			XCTAssertEqual(privacy.value, TestPrivacyType.Public)
+			XCTAssertEqual(privacy.value, TestPrivacyType.publicType)
 
 			if let executable = initOpt.value as? CommandOption, let privacy = executable.value as? EnumOption<TestPrivacyType> {
-				XCTAssertEqual(privacy.value, TestPrivacyType.Public, "Failed: init executable --privacy public")
+				XCTAssertEqual(privacy.value, TestPrivacyType.publicType, "Failed: init executable --privacy public")
 			} else {
 				XCTAssertTrue(false, "Failed: init executable --privacy public")
 			}
@@ -78,7 +78,7 @@ final class SwiftArgsTests: XCTestCase {
 			try args.parse(["command1", "--lang", "python"])
 
 			if let flags = command1.value as? EnumOption<TestLanguage> {
-				XCTAssertEqual(flags.value, TestLanguage.Python, "Failed: command1 --lang python")
+				XCTAssertEqual(flags.value, TestLanguage.python, "Failed: command1 --lang python")
 			} else {
 				XCTAssertTrue(false, "Failed: command1 --lang python")
 			}
@@ -86,11 +86,11 @@ final class SwiftArgsTests: XCTestCase {
 			XCTAssertEqual(type.value, nil)
 
 			try args.parse(["command2", "--privacy", "private", "-t", "type3"])
-			XCTAssertEqual(type.value, TestEnumType.Type3, "Failed: command2 --privacy private -t type3")
-			XCTAssertEqual(privacy.value, TestPrivacyType.Private, "Failed: command2 --privacy private -t type3")
+			XCTAssertEqual(type.value, TestEnumType.type3, "Failed: command2 --privacy private -t type3")
+			XCTAssertEqual(privacy.value, TestPrivacyType.privateType, "Failed: command2 --privacy private -t type3")
 
 			try args.parse(["command2", "--privacy", "public"])
-			XCTAssertEqual(privacy.value, TestPrivacyType.Public, "Failed: command2 --privacy public")
+			XCTAssertEqual(privacy.value, TestPrivacyType.publicType, "Failed: command2 --privacy public")
 
 			XCTAssertFalse(someBool.value!)
 			try args.parse(["--bool", "command2"])
@@ -117,80 +117,58 @@ final class SwiftArgsTests: XCTestCase {
 		func testMissingValueString() throws { try args.parse(["--name"]) }
 
 		XCTAssertThrowsError(try testInvalidArgument()) { error in
-			let error = error as! SwiftArgsError
-
-			switch error {
-				case .invalidArgument:
-					XCTAssertTrue(true, "Failed: testInvalidArgument()")
-					XCTAssertEqual(error.description, "Invalid argument -- --help")
-				default:
-					XCTAssertTrue(false, "Failed: testInvalidArgument()")
+			if let error = error as? SwiftArgsError, case .invalidArgument = error {
+				XCTAssertEqual(error.description, "Invalid argument -- --help", "Failed: testInvalidArgument()")
+			} else {
+				XCTAssertTrue(false, "Failed: testInvalidArgument()")
 			}
 		}
 
 		XCTAssertThrowsError(try testInvalidCommand()) { error in
-			let error = error as! SwiftArgsError
-
-			switch error {
-				case .invalidCommand:
-					XCTAssertTrue(true, "Failed: testInvalidCommand()")
-					XCTAssertEqual(error.description, "Invalid value 'foo' for compose")
-				default:
-					XCTAssertTrue(false, "Failed: testInvalidCommand()")
+			if let error = error as? SwiftArgsError, case .invalidCommand = error {
+				XCTAssertEqual(error.description, "Invalid value 'foo' for compose", "Failed: testInvalidCommand()")
+			} else {
+				XCTAssertTrue(false, "Failed: testInvalidCommand()")
 			}
 		}
 
 		XCTAssertThrowsError(try testInvalidValue()) { error in
-			let error = error as! SwiftArgsError
-
-			switch error {
-				case .invalidValue:
-					XCTAssertTrue(true, "Failed: testInvalidValue()")
-					XCTAssertEqual(error.description, "Invalid value 'foo' for --privacy")
-				default:
-					XCTAssertTrue(false, "Failed: testInvalidValue()")
+			if let error = error as? SwiftArgsError, case .invalidValue = error {
+				XCTAssertEqual(error.description, "Invalid value 'foo' for --privacy", "Failed: testInvalidValue()")
+			} else {
+				XCTAssertTrue(false, "Failed: testInvalidValue()")
 			}
 		}
 
 		XCTAssertThrowsError(try testMissingValueEnum()) { error in
-			let error = error as! SwiftArgsError
-
-			switch error {
-				case .missingValue:
-					XCTAssertTrue(true, "Failed: testMissingValueEnum()")
-					XCTAssertEqual(error.description, "--privacy requires a value")
-				default:
-					XCTAssertTrue(false, "Failed: testMissingValueEnum()")
+			if let error = error as? SwiftArgsError, case .missingValue = error {
+				XCTAssertEqual(error.description, "--privacy requires a value", "Failed: testMissingValueEnum()")
+			} else {
+				XCTAssertTrue(false, "Failed: testMissingValueEnum()")
 			}
 		}
 
 		XCTAssertThrowsError(try testMissingValueString()) { error in
-			let error = error as! SwiftArgsError
-
-			switch error {
-				case .missingValue:
-					XCTAssertTrue(true, "Failed: testMissingValueString()")
-					XCTAssertEqual(error.description, "--name requires a value")
-
-				default:
-					XCTAssertTrue(false, "Failed: testMissingValueString()")
+			if let error = error as? SwiftArgsError, case .missingValue = error {
+				XCTAssertEqual(error.description, "--name requires a value", "Failed: testMissingValueString()")
+			} else {
+				XCTAssertTrue(false, "Failed: testMissingValueString()")
 			}
 		}
-
 	}
 
 	func testPrintUsage() {
 		let help = BoolOption(name: "help", longFlag: "help", usageMessage: "Outputs usage information")
-		let type = EnumOption<TestPrivacyType>(name: "type", shortFlag: "t", longFlag: "type", usageMessage: "Sets the privacy level")
+		let type = EnumOption<TestPrivacyType>(name: "type", longFlag: "type", usageMessage: "Sets the privacy level")
 
 		let clone = CommandOption("clone", usageMessage: "Clone a repository into a new directory")
 		let inits = CommandOption("init", usageMessage: "Create an empty Git repository or reinitialize an existing one")
 		let add		= CommandOption("add", usageMessage: "Add file contents to the index")
-		let mv		= CommandOption("mv", usageMessage: "Move or rename a file, a directory, or a symlink")
+		let move	= CommandOption("mv", usageMessage: "Move or rename a file, a directory, or a symlink")
 		let reset = CommandOption("mv", usageMessage: "Reset current HEAD to the specified state")
-		let rm		= CommandOption("rm", usageMessage: "Remove files from the working tree and from the index")
+		let remove = CommandOption("rm", usageMessage: "Remove files from the working tree and from the index")
 
-		let args = SwiftArgs(arguments: [help, type, clone, inits, add, mv, reset, rm])
+		let args = SwiftArgs(arguments: [help, type, clone, inits, add, move, reset, remove])
 
 		args.printUsage(debugMode: true)
 
