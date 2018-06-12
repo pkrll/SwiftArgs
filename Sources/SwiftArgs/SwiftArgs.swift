@@ -20,8 +20,9 @@ public class SwiftArgs {
 	}
 
 	public func printError(_ error: Error) {
-		let error = error as? SwiftArgsError ?? error
-		print(error)
+		if let error = error as? SwiftArgsError {
+			print(error.description.red)
+		}
 	}
 
 	public func printUsage(debugMode: Bool = false) {
