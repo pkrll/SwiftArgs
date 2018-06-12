@@ -2,8 +2,8 @@
 [![codecov](https://codecov.io/gh/pkrll/SwiftArgs/branch/master/graph/badge.svg)](https://codecov.io/gh/pkrll/SwiftArgs)
 [![sonar](https://sonarcloud.io/api/project_badges/measure?project=SwiftArgs&metric=alert_status)](https://sonarcloud.io/dashboard?id=SwiftArgs)
 [![cocoapod](https://img.shields.io/cocoapods/v/Swiftargs.svg)](https://cocoapods.org/pods/SwiftArgs)
-![release](https://img.shields.io/github/tag/pkrll/Swiftargs.svg)
-![commits since latest release](https://img.shields.io/github/commits-since/pkrll/Swiftargs/0.3.2.svg)
+![release](https://img.shields.io/github/release/pkrll/Swiftargs.svg)
+![commits since latest release](https://img.shields.io/github/commits-since/pkrll/Swiftargs/latest.svg)
 
 <img src=".assets/SwiftArgs.png" data-canonical-src=".assets/SwiftArgs.png" align="right" width="250px"/>
 
@@ -31,7 +31,7 @@ Add SwiftArgs as a dependency in ``Package.swift``:
 // Package.swift
 
 dependencies: [
-    .package(url: "https://github.com/pkrll/SwiftArgs", from: "0.1.0")
+    .package(url: "https://github.com/pkrll/SwiftArgs", from: "0.4.0")
 ]
 
 ```
@@ -125,13 +125,20 @@ if help.value! {
 	 * 	... or to check which command it's associated with, use
 	 * 	optional chaining to unwrap the nested arguments.
 	 */
-	if let bType = build.value as? EnumOption<BuildType>, let value = bType.value {
+	if let bType = build.argument as? EnumOption<BuildType>, let value = bType.value {
 		switch value {
 			case BuildType.Debug:
 				print("Build type: Debug!")
 			case BuildType.Release:
 				print("Build type: Release!")
 		}
+	}
+	/**
+	 * To see if a command was used, check
+	 * its value property:
+	 */
+	if build.value {
+		print("Commence building...")
 	}
 }
 ```
