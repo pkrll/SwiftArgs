@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "SwiftArgs"
-  s.version      = "0.4.1"
+  s.version      = "0.4.2"
   s.summary      = "A small Swift framework for creating simple command line interfaces."
 
   # This description is used to generate tags and improve search results.
