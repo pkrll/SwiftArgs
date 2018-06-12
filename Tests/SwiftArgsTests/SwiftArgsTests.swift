@@ -176,7 +176,7 @@ final class SwiftArgsTests: XCTestCase {
 		args.printUsage(debugMode: true)
 
 		XCTAssertTrue(args.outputStream.contains("Usage:"))
-		XCTAssertTrue(args.outputStream.contains("Commands:\n"))
+		XCTAssertTrue(args.outputStream.contains("Commands:"))
 		XCTAssertTrue(args.outputStream.contains("clone"))
 		XCTAssertTrue(args.outputStream.contains("init"))
 		XCTAssertTrue(args.outputStream.contains("add"))
