@@ -11,6 +11,7 @@
 
 * [Installation](#installation)
 	* [Swift Package Manager](#swift-package-manager)
+	* [CocoaPods](#cocoapods)
 * [Usage](#usage)
 	* [CommandOption](#commandoption)
 	* [BoolOption](#booloption)
@@ -21,11 +22,11 @@
 
 ## Installation
 
-**SwiftArgs** is currently only available using Swift Package Manager.
+You can install ``SwiftArgs`` with the Swift Package Manager or Cocoapods.
 
 ##### Swift Package Manager
 
-Add SwiftArgs as a dependency in ``Package.swift``:
+Add ``SwiftArgs`` as a dependency in ``Package.swift``:
 
 ```swift
 // Package.swift
@@ -34,6 +35,14 @@ dependencies: [
     .package(url: "https://github.com/pkrll/SwiftArgs", from: "0.4.0")
 ]
 
+```
+
+##### CocoaPods
+
+Add ``SwiftArgs`` to your Podfile:
+
+```ruby
+pod 'SwiftArgs', '~> 0.4'
 ```
 
 ## Usage
