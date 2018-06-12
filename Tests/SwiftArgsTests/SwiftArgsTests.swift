@@ -161,7 +161,7 @@ final class SwiftArgsTests: XCTestCase {
 	}
 
 	func testPrintUsage() {
-		let help = BoolOption(name: "help", longFlag: "help", usageMessage: "Outputs usage information")
+		let help = BoolOption(name: "help", shortFlag: "h", longFlag: "help", usageMessage: "Outputs usage information")
 		let type = EnumOption<TestPrivacyType>(name: "type", longFlag: "type", usageMessage: "Sets the privacy level")
 
 		let clone = CommandOption("clone", usageMessage: "Clone a repository into a new directory")
