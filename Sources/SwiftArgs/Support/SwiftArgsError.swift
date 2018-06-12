@@ -8,9 +8,12 @@ public enum SwiftArgsError: Error, CustomStringConvertible {
 	case invalidValue(String, for: String)
 	case invalidCommand(String, for: String)
 	case invalidArgument(String)
+	case missingRequiredArgument(String)
 
 	public var description: String {
 		switch self {
+		case let .missingRequiredArgument(options):
+			return "Missing required arguments: \(options)"
 		case let .missingValue(option):
 			return "\(option) requires a value"
 		case let .invalidValue(value, option):

@@ -62,6 +62,12 @@ public class FlagOption<T>: Argument {
 		return sFlag == compare || lFlag == compare
 	}
 
+	override internal func validate() throws {
+		if self.isRequired && self.value == nil {
+			throw SwiftArgsError.missingRequiredArgument(self.description)
+		}
+	}
+
 	override internal func setValue(_ value: Any) throws {
 		guard let value = value as? T else { return }
 		self.value = value

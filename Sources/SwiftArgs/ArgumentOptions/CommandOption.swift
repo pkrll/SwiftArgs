@@ -39,6 +39,14 @@ public class CommandOption: Argument {
 		return self.arguments[argument]
 	}
 
+	override internal func validate() throws {
+		if self.isRequired && self.value == false {
+			throw SwiftArgsError.missingRequiredArgument(self.description)
+		}
+
+		try self.arguments.forEach { try $0.validate() }
+	}
+
 	internal override func setValue(_ value: Any) throws {
 		guard let value = value as? Bool else { return }
 		self.value = value

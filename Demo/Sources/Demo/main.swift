@@ -1,3 +1,4 @@
+import Foundation
 import SwiftArgs
 
 enum BuildType: String {
@@ -5,29 +6,41 @@ enum BuildType: String {
 	case release
 }
 
-let help = BoolOption(name: "help", shortFlag: "h", longFlag: "help", usageMessage: "Display available options")
-let version = BoolOption(name: "version",
-										shortFlag: "v",
-										 longFlag: "version",
-								 usageMessage: "Display version information")
+let help = BoolOption(
+	name: "help",
+	shortFlag: "h",
+	longFlag: "help",
+	description: "Display available options"
+)
 
-let buildType = EnumOption<BuildType>(name: "BuildType",
-																 shortFlag: "t",
-																 	longFlag: "type",
-															usageMessage: "Specify the build configuration: debug|release")
+let version = BoolOption(
+	name: "version",
+	shortFlag: "v",
+	longFlag: "version",
+	description: "Display version information"
+)
 
-let clean = CommandOption("clean", usageMessage: "Clean up any build artifacts")
-let build = CommandOption("build", withArguments: [help, buildType], usageMessage: "Build the project")
-let test = CommandOption("test", withArguments: [help, buildType], usageMessage: "Test the project")
-let run = CommandOption("run", withArguments: [help, buildType], usageMessage: "Execute the project")
+let buildType = EnumOption<BuildType>(
+	name: "BuildType",
+	shortFlag: "t",
+	longFlag: "type",
+	description: "Specify the build configuration: debug|release",
+	isRequired: true
+)
+
+let clean = CommandOption("clean", description: "Clean up any build artifacts")
+let build = CommandOption("build", withArguments: [help, buildType], description: "Build the project")
+let test = CommandOption("test", withArguments: [help, buildType], description: "Test the project")
+let run = CommandOption("run", withArguments: [help, buildType], description: "Execute the project")
 
 let args = SwiftArgs(arguments: [help, version, clean, build, test, run])
 
 do {
-	try args.parse()
+	try args.parse() // or try args.parse(["build", "--type", "debug"])
 } catch {
 	args.printError(error)
 	args.printUsage()
+	exit(1)
 }
 
 /**

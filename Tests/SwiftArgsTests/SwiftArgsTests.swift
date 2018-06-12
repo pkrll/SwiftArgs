@@ -23,7 +23,9 @@ final class SwiftArgsTests: XCTestCase {
 		("testNestedArguments", testNestedArguments),
 		("testFlagOptions", testFlagOptions),
 		("testErrorOutput", testErrorOutput),
-		("testPrintUsage", testPrintUsage)
+		("testPrintUsage", testPrintUsage),
+		("testRequiredArguments", testRequiredArguments),
+		("testChainCommands", testChainCommands)
 	]
 
 	func testNestedArguments() {
@@ -107,9 +109,9 @@ final class SwiftArgsTests: XCTestCase {
 	}
 
 	func testErrorOutput() {
-		let compose = CommandOption("compose")
 		let privacy = EnumOption<TestPrivacyType>(name: "Privacy", longFlag: "privacy")
 		let string 	= StringOption(name: "name", longFlag: "name")
+		let compose = CommandOption("compose", withArguments: [string])
 
 		let args = SwiftArgs(arguments: [compose, privacy, string])
 
@@ -189,6 +191,75 @@ final class SwiftArgsTests: XCTestCase {
 		XCTAssertTrue(args.outputStream.contains("Move or rename a file, a directory, or a symlink"))
 		XCTAssertTrue(args.outputStream.contains("Reset current HEAD to the specified state"))
 		XCTAssertTrue(args.outputStream.contains("Remove files from the working tree and from the index"))
+	}
+
+	func testRequiredArguments() {
+		let help = BoolOption(
+			name: "help",
+			shortFlag: "h",
+			longFlag: "help",
+			description: "Outputs usage information")
+
+		let type = EnumOption<TestPrivacyType>(
+			name: "type",
+			longFlag: "type",
+			description: "Sets the privacy level",
+			isRequired: true)
+
+		let inits = CommandOption("init", withArguments: [help, type], isRequired: true)
+		let add		= CommandOption("add", description: "Add file contents to the index")
+
+		let args = SwiftArgs(arguments: [inits, add])
+
+		do {
+			try args.parse([])
+			XCTAssertTrue(false, "Failed: Missing required argument not missing")
+		} catch let actualError as SwiftArgsError {
+			let expectedError = SwiftArgsError.missingRequiredArgument("init").description
+			XCTAssertEqual(actualError.description, expectedError)
+		} catch {
+			XCTAssertTrue(false, "Failed: \(error)")
+		}
+
+		do {
+			try args.parse(["init"])
+			XCTAssertTrue(false, "Failed: Missing required argument not missing")
+		} catch let actualError as SwiftArgsError {
+			let expectedError = SwiftArgsError.missingRequiredArgument("--type").description
+			XCTAssertEqual(actualError.description, expectedError)
+		} catch {
+			XCTAssertTrue(false, "Failed: \(error)")
+		}
+
+		do {
+			try args.parse(["init", "--type", "public"])
+			XCTAssertTrue(true, "Failed: Required argument is missing")
+		} catch {
+			XCTAssertTrue(false, "Failed: \(error)")
+		}
+	}
+
+	func testChainCommands() {
+		let lang = EnumOption<TestLanguage>(name: "language", longFlag: "lang")
+		let build = CommandOption("build")
+		let run		= CommandOption("run", withArguments: [lang])
+		let clean = CommandOption("clean")
+
+		let args = SwiftArgs(arguments: [clean, build, run])
+
+		do {
+			try args.parse(["clean", "build"])
+			XCTAssertTrue(true)
+		} catch {
+			XCTAssertTrue(false)
+		}
+
+		do {
+			try args.parse(["run", "build"])
+			XCTAssertTrue(false)
+		} catch {
+			XCTAssertTrue(true)
+		}
 	}
 
 }
