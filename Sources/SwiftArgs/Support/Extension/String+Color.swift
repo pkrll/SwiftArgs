@@ -4,18 +4,24 @@
 //
 public extension String {
 
-	internal mutating func setColor(_ color: SwiftArgsColor, toWords words: String...) {
+	internal mutating func setColor(_ color: ANSIColor, style: ANSIAttribute = .normal, toWords words: String...) {
 		var string = self
 
 		for word in words {
-			string = string.replacingOccurrences(of: word, with: word.colorize(color))
+			string = string.replacingOccurrences(of: word, with: word.colorize(color, withStyle: style))
 		}
 
 		self = string
 	}
 
-	internal func colorize(_ color: SwiftArgsColor) -> String {
-		return "\(color.rawValue)\(self)\(SwiftArgsColor.default.rawValue)"
+	internal func colorize(_ color: ANSIColor, withStyle style: ANSIAttribute = .normal) -> String {
+		let color = color.rawValue
+		let style = style.rawValue
+
+		let startCode = "\u{001B}[\(style);\(color)m"
+		let endCode =  "\u{001B}[\(ANSIAttribute.normal.rawValue);\(ANSIColor.default.rawValue)m"
+
+		return "\(startCode)\(self)\(endCode)"
 	}
 
 	public var black: String {
