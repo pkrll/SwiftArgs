@@ -25,10 +25,16 @@ public class SwiftArgs {
 		}
 	}
 
-	public func printUsage(debugMode: Bool = false) {
-		var description = "Usage: \(self.executableName) <command> <argument>\n"
+	public func printUsage(_ argument: Argument? = nil, debugMode: Bool = false) {
+		var commandName = "<command>".yellow
 
-		description += "\(self.parser.printUsage())"
+		if let command = argument as? CommandOption {
+			commandName = command.name
+		}
+
+		var description = "Usage: \(self.executableName) \(commandName) <argument>\n"
+
+		description += "\(self.parser.printUsage(argument))"
 
 		if debugMode {
 			print(description, to: &self.outputStream)

@@ -4,7 +4,7 @@
 //
 public class CommandOption: Argument {
 
-	private let arguments: [Argument]
+	internal let arguments: [Argument]
 	private(set) public var argument: Argument?
 	private(set) public var value: Bool = false
 	/**

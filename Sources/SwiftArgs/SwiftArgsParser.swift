@@ -27,11 +27,19 @@ internal class SwiftArgsParser {
 		self.validArguments = arguments
 	}
 
-	func printUsage() -> String {
+	func printUsage(_ argument: Argument? = nil) -> String {
+		guard let command = argument as? CommandOption else {
+			return self.printUsage(self.validArguments)
+		}
+
+		return self.printUsage(command.arguments)
+	}
+
+	private func printUsage(_ arguments: [Argument]) -> String {
 		var description = ""
 
-		let commands = self.validArguments.filter { $0.type == .commandOption }
-		let flags = self.validArguments.filter { $0.type != .commandOption }
+		let commands = arguments.filter { $0.type == .commandOption }
+		let flags = arguments.filter { $0.type != .commandOption }
 
 		var swiftConsole = SwiftConsole()
 
