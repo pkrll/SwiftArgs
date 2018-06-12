@@ -19,7 +19,7 @@ internal extension String {
 		let style = style.rawValue
 
 		let startCode = "\u{001B}[\(style);\(color)m"
-		let endCode =  "\u{001B}[\(ANSIAttribute.normal.rawValue);\(ANSIColor.default.rawValue)m"
+		let endCode =  "\u{001B}[\(ANSIAttribute.normal.rawValue);\(ANSIColor.normal.rawValue)m"
 
 		return "\(startCode)\(self)\(endCode)"
 	}
@@ -56,8 +56,8 @@ internal extension String {
 		return self.colorize(.yellow)
 	}
 
-	internal var `default`: String {
-		return self.colorize(.`default`)
+	internal var normal: String {
+		return self.colorize(.normal)
 	}
 
 }

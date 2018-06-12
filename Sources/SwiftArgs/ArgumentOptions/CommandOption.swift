@@ -40,7 +40,7 @@ public class CommandOption: Argument {
 	}
 
 	override internal func validate() throws {
-		if self.isRequired && self.value == false {
+		if self.isRequired && !self.value {
 			throw SwiftArgsError.missingRequiredArgument(self.description)
 		}
 

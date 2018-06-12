@@ -80,13 +80,6 @@ internal class SwiftArgsParser {
 		for argument in self.validArguments {
 			try argument.validate()
 		}
-
-		// let requiredArguments = self.validArguments.filter { $0.validate() == false }
-
-		// if requiredArguments.count > 0 {
-		// 	let missing = requiredArguments.compactMap { $0.description }.joined(separator: ", ")
-		// 	throw SwiftArgsError.missingRequiredArgument(missing)
-		// }
 	}
 
 	private func parse(_ argument: Argument) throws {

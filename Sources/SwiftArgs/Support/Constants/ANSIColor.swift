@@ -12,6 +12,6 @@ enum ANSIColor: UInt8 {
 	case red				= 31
 	case yellow			= 33
 	case white			= 37
-	case `default`	= 0
+	case normal			= 0
 
 }
