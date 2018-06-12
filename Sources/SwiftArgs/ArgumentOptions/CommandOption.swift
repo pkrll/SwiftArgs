@@ -7,20 +7,28 @@ public class CommandOption: Argument {
 	internal let arguments: [Argument]
 	private(set) public var argument: Argument?
 	private(set) public var value: Bool = false
-	/**
-	 *  CommandOption represents a command (i.e. init).
-	 *
-	 *  - Parameter name: Name of the option
-	 *  - Parameter withArguments: List of sub arguments.
-	 */
-	public init(_ name: String, withArguments arguments: [Argument] = [], usageMessage: String? = nil) {
-		self.arguments = arguments
-		super.init(name: name, usageMessage: usageMessage)
+  /**
+   *  CommandOption represents a command (i.e. `init`).
+   *
+   *  - Parameter name: Name of the option.
+   *  - Parameter withArguments: List of sub arguments.
+   *  - Parameter description: The description of the argument.
+   *  - Parameter isRequired: If true, the argument must be set.
+   */
+	public init(_ name: String, withArguments: [Argument] = [], description: String? = nil, isRequired: Bool = false) {
+		self.arguments = withArguments
+		super.init(name: name, description: description, isRequired: isRequired)
 		self.type = .commandOption
 	}
-
-	public convenience init(_ name: String, usageMessage: String? = nil) {
-		self.init(name, withArguments: [], usageMessage: usageMessage)
+  /**
+   *  CommandOption represents a command (i.e. `init`).
+   *
+   *  - Parameter name: Name of the option.
+   *  - Parameter description: The description of the argument.
+   *  - Parameter isRequired: If true, the argument must be set.
+   */
+	public convenience init(_ name: String, description: String? = nil, isRequired: Bool = false) {
+		self.init(name, withArguments: [], description: description, isRequired: isRequired)
 	}
 
 	internal func takesArgument(_ argument: String) -> Bool {

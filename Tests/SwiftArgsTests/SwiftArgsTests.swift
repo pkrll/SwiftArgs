@@ -27,7 +27,7 @@ final class SwiftArgsTests: XCTestCase {
 	]
 
 	func testNestedArguments() {
-		let type 		= EnumOption<TestEnumType>(name: "type", shortFlag: "t", longFlag: "type", usageMessage: "Sets the type")
+		let type 		= EnumOption<TestEnumType>(name: "type", shortFlag: "t", longFlag: "type", description: "Sets the type")
 		let privacy = EnumOption<TestPrivacyType>(name: "Privacy", longFlag: "privacy")
 		let library	= CommandOption("library", withArguments: [type])
 		let exec		= CommandOption("executable", withArguments: [type, privacy])
@@ -161,15 +161,15 @@ final class SwiftArgsTests: XCTestCase {
 	}
 
 	func testPrintUsage() {
-		let help = BoolOption(name: "help", shortFlag: "h", longFlag: "help", usageMessage: "Outputs usage information")
-		let type = EnumOption<TestPrivacyType>(name: "type", longFlag: "type", usageMessage: "Sets the privacy level")
+		let help = BoolOption(name: "help", shortFlag: "h", longFlag: "help", description: "Outputs usage information")
+		let type = EnumOption<TestPrivacyType>(name: "type", longFlag: "type", description: "Sets the privacy level")
 
-		let clone = CommandOption("clone", usageMessage: "Clone a repository into a new directory")
-		let inits = CommandOption("init", usageMessage: "Create an empty Git repository or reinitialize an existing one")
-		let add		= CommandOption("add", usageMessage: "Add file contents to the index")
-		let move	= CommandOption("mv", usageMessage: "Move or rename a file, a directory, or a symlink")
-		let reset = CommandOption("mv", usageMessage: "Reset current HEAD to the specified state")
-		let remove = CommandOption("rm", usageMessage: "Remove files from the working tree and from the index")
+		let clone = CommandOption("clone", description: "Clone a repository into a new directory")
+		let inits = CommandOption("init", description: "Create an empty Git repository or reinitialize an existing one")
+		let add		= CommandOption("add", description: "Add file contents to the index")
+		let move	= CommandOption("mv", description: "Move or rename a file, a directory, or a symlink")
+		let reset = CommandOption("mv", description: "Reset current HEAD to the specified state")
+		let remove = CommandOption("rm", description: "Remove files from the working tree and from the index")
 
 		let args = SwiftArgs(arguments: [help, type, clone, inits, add, move, reset, remove])
 

@@ -24,28 +24,35 @@ public class FlagOption<T>: Argument {
 
 		return returnValue
 	}
-	/**
-	 *  FlagOption represents a flag argument (i.e. --flag).
-	 *
-	 *  - Parameter name: Name of the option
-	 *  - Parameter shortFlag: The short flag to be used.
-	 *  - Parameter longFlag: The long flag to be used.
-	 *  - Parameter usageMessage: The description for the option.
-	 */
-	public init(name: String, shortFlag: String?, longFlag: String? = nil, usageMessage: String? = nil) {
+  /**
+   *  FlagOption represents a flag argument (i.e. --flag).
+   *
+   *  - Parameter name: Name of the option.
+   *  - Parameter shortFlag: The short flag to be used.
+   *  - Parameter longFlag: The long flag to be used.
+   *  - Parameter description: The description for the option.
+   *  - Parameter isRequired: If true, the argument must be set.
+   */
+	public init(
+			name: String,
+			shortFlag: String?,
+			longFlag: String? = nil,
+			description: String? = nil,
+			isRequired: Bool = false) {
 		self.shortFlag = shortFlag
 		self.longFlag = longFlag
-		super.init(name: name, usageMessage: usageMessage)
+		super.init(name: name, description: description, isRequired: isRequired)
 	}
-	/**
-	 *  FlagOption represents a flag argument (i.e. --flag).
-	 *
-	 *  - Parameter name: Name of the option
-	 *  - Parameter longFlag: The long flag to be used.
-	 *  - Parameter usageMessage: The description for the option.
-	 */
-	public convenience init(name: String, longFlag: String, usageMessage: String? = nil) {
-		self.init(name: name, shortFlag: nil, longFlag: longFlag, usageMessage: usageMessage)
+  /**
+   *  FlagOption represents a flag argument (i.e. --flag).
+   *
+   *  - Parameter name: Name of the option.
+   *  - Parameter longFlag: The long flag to be used.
+   *  - Parameter description: The description for the option.
+   *  - Parameter isRequired: If true, the argument must be set.
+   */
+	public convenience init(name: String, longFlag: String, description: String? = nil, isRequired: Bool = false) {
+		self.init(name: name, shortFlag: nil, longFlag: longFlag, description: description, isRequired: isRequired)
 	}
 
 	override internal func equals(_ compare: String) -> Bool {
