@@ -24,7 +24,8 @@ final class SwiftArgsTests: XCTestCase {
 		("testFlagOptions", testFlagOptions),
 		("testErrorOutput", testErrorOutput),
 		("testPrintUsage", testPrintUsage),
-		("testRequiredArguments", testRequiredArguments)
+		("testRequiredArguments", testRequiredArguments),
+		("testChainCommands", testChainCommands)
 	]
 
 	func testNestedArguments() {
@@ -108,9 +109,9 @@ final class SwiftArgsTests: XCTestCase {
 	}
 
 	func testErrorOutput() {
-		let compose = CommandOption("compose")
 		let privacy = EnumOption<TestPrivacyType>(name: "Privacy", longFlag: "privacy")
 		let string 	= StringOption(name: "name", longFlag: "name")
+		let compose = CommandOption("compose", withArguments: [string])
 
 		let args = SwiftArgs(arguments: [compose, privacy, string])
 
@@ -235,6 +236,29 @@ final class SwiftArgsTests: XCTestCase {
 			XCTAssertTrue(true, "Failed: Required argument is missing")
 		} catch {
 			XCTAssertTrue(false, "Failed: \(error)")
+		}
+	}
+
+	func testChainCommands() {
+		let lang = EnumOption<TestLanguage>(name: "language", longFlag: "lang")
+		let build = CommandOption("build")
+		let run		= CommandOption("run", withArguments: [lang])
+		let clean = CommandOption("clean")
+
+		let args = SwiftArgs(arguments: [clean, build, run])
+
+		do {
+			try args.parse(["clean", "build"])
+			XCTAssertTrue(true)
+		} catch {
+			XCTAssertTrue(false)
+		}
+
+		do {
+			try args.parse(["run", "build"])
+			XCTAssertTrue(false)
+		} catch {
+			XCTAssertTrue(true)
 		}
 	}
 
