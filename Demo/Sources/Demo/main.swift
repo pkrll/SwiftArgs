@@ -1,8 +1,8 @@
 import SwiftArgs
 
 enum BuildType: String {
-	case Debug = "debug"
-	case Release = "release"
+	case debug
+	case release
 }
 
 let help = BoolOption(name: "help", shortFlag: "h", longFlag: "help", usageMessage: "Display available options")
@@ -25,33 +25,37 @@ do {
 }
 
 /**
- * 	Check if the BoolOption help (-h, --help) or version
- * 	(-v --version) was specified with the value property.
- */
+* 	Check if the BoolOption help (-h, --help) or version
+* 	(-v --version) was specified with the value property.
+*/
 if help.value! {
 	args.printUsage()
 } else if version.value! {
 	print("SwiftArgsDemo v1.0")
 } else {
 	/**
-	 * 	You can directly access the EnumOption's value property
-	 * 	to check its value (nil if not used)...
-	 */
-	if buildType.value == BuildType.Debug {
+	* 	You can directly access the EnumOption's value property
+	* 	to check its value (nil if not used)...
+	*/
+	if buildType.value == BuildType.debug {
 		print("Build type: Debug!")
-	} else if buildType.value == BuildType.Release {
+	} else if buildType.value == BuildType.release {
 		print("Build type: Release!")
 	}
 	/**
-	 * 	... or to check which command it's associated with, use
-	 * 	optional chaining to unwrap the nested arguments.
-	 */
-	if let bType = build.value as? EnumOption<BuildType>, let value = bType.value {
+	* 	... or to check which command it's associated with, use
+	* 	optional chaining to unwrap the nested arguments.
+	*/
+	if let bType = build.argument as? EnumOption<BuildType>, let value = bType.value {
 		switch value {
-			case BuildType.Debug:
-				print("Build type: Debug!")
-			case BuildType.Release:
-				print("Build type: Release!")
+		case BuildType.debug:
+			print("Build type: Debug!")
+		case BuildType.release:
+			print("Build type: Release!")
 		}
+	}
+
+	if build.value {
+		print("Commence building...")
 	}
 }
