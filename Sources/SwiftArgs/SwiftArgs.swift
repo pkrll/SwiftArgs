@@ -5,14 +5,17 @@
 public class SwiftArgs {
 
 	private let parser: SwiftArgsParser
+	private var executableName: String = ""
 
 	private(set) public var outputStream: String = ""
 
 	public init(arguments: [Argument] = []) {
 		self.parser = SwiftArgsParser(arguments: arguments)
+		self.executableName = CommandLine.arguments[0]
 	}
 
 	public func parse(_ arguments: [String]? = nil) throws {
+		let arguments = (arguments == nil) ? Array(CommandLine.arguments[1...]) : arguments!
 		try self.parser.start(arguments)
 	}
 
@@ -22,7 +25,7 @@ public class SwiftArgs {
 	}
 
 	public func printUsage(debugMode: Bool = false) {
-		var description = "Usage: APP_NAME <command> <argument>\n"
+		var description = "Usage: \(self.executableName) <command> <argument>\n"
 
 		description += "\(self.parser.printUsage())"
 

@@ -57,8 +57,8 @@ internal class SwiftArgsParser {
 	 * 	- Throws: `SwiftArgsError.invalidArgument` if the `arguments` parameter
 	 * 		contains arguments that does not match those in `validArguments`.
 	 */
-	func start(_ arguments: [String]? = nil) throws {
-		self.givenArguments = (arguments == nil) ? Array(CommandLine.arguments[1...]) : arguments!
+	func start(_ arguments: [String]) throws {
+		self.givenArguments = arguments
 		self.currentIndex = 0
 
 		while let nextArgument = self.nextArgument {
