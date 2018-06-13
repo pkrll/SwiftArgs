@@ -44,7 +44,9 @@ public class CommandOption: Argument {
 			throw SwiftArgsError.missingRequiredArgument(self.description)
 		}
 
-		try self.arguments.forEach { try $0.validate() }
+		if self.value {
+			try self.arguments.forEach { try $0.validate() }
+		}
 	}
 
 	internal override func setValue(_ value: Any) throws {
