@@ -4,7 +4,7 @@
 [![Pod version](https://img.shields.io/cocoapods/v/SwiftArgs.svg)](https://cocoapods.org/pods/SwiftArgs)
 ![release](https://img.shields.io/github/release/pkrll/Swiftargs.svg)
 
-<img src=".assets/SwiftArgs.png" data-canonical-src=".assets/SwiftArgs.png" align="right" width="250px"/>
+<img src="https://raw.githubusercontent.com/pkrll/SwiftArgs/master/.assets/SwiftArgs.png" align="right" width="250px"/>
 
 **SwiftArgs** is a small Swift framework for creating simple command line interfaces.
 
