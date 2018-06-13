@@ -28,36 +28,72 @@ internal extension String {
 		return self.colorize(.black)
 	}
 
+	internal var blackBold: String {
+		return self.colorize(.black, withStyle: .bold)
+	}
+
 	internal var blue: String {
 		return self.colorize(.blue)
+	}
+
+	internal var blueBold: String {
+		return self.colorize(.blue, withStyle: .bold)
 	}
 
 	internal var cyan: String {
 		return self.colorize(.cyan)
 	}
 
+	internal var cyanBold: String {
+		return self.colorize(.cyan, withStyle: .bold)
+	}
+
 	internal var green: String {
 		return self.colorize(.green)
+	}
+
+	internal var greenBold: String {
+		return self.colorize(.green, withStyle: .bold)
 	}
 
 	internal var magenta: String {
 		return self.colorize(.magenta)
 	}
 
+	internal var magentaBold: String {
+		return self.colorize(.magenta, withStyle: .bold)
+	}
+
 	internal var red: String {
 		return self.colorize(.red)
+	}
+
+	internal var redBold: String {
+		return self.colorize(.red, withStyle: .bold)
 	}
 
 	internal var white: String {
 		return self.colorize(.white)
 	}
 
+	internal var whiteBold: String {
+		return self.colorize(.white, withStyle: .bold)
+	}
+
 	internal var yellow: String {
 		return self.colorize(.yellow)
 	}
 
+	internal var yellowBold: String {
+		return self.colorize(.yellow, withStyle: .bold)
+	}
+
 	internal var normal: String {
 		return self.colorize(.normal)
+	}
+
+	internal var normalBold: String {
+		return self.colorize(.normal, withStyle: .bold)
 	}
 
 }

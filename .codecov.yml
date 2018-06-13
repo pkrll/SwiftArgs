@@ -1,0 +1,3 @@
+ignore:
+  - "Sources/SwiftArgs/Support/Extension"
+  - "Sources/SwiftArgs/Support/OutputStream.swift"

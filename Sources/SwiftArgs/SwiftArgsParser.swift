@@ -44,12 +44,12 @@ internal class SwiftArgsParser {
 		var swiftConsole = SwiftConsole()
 
 		if commands.count > 0 {
-			swiftConsole.addHeader("Commands:".red)
+			swiftConsole.addHeader("Commands:".magentaBold)
 			commands.forEach { swiftConsole.addRow(leftColumn: $0.name.blue, rightColumn: $0.help?.green) }
 		}
 
 		if flags.count > 0 {
-			swiftConsole.addHeader("Optional arguments:".red)
+			swiftConsole.addHeader("Options:".magentaBold)
 			flags.forEach { swiftConsole.addRow(leftColumn: $0.description.blue, rightColumn: $0.help?.green) }
 		}
 
