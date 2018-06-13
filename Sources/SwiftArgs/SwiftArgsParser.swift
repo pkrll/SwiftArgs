@@ -123,7 +123,7 @@ internal class SwiftArgsParser {
 
 		while let argument = self.nextArgument {
 			guard commandOption.takesArgument(argument), let subArgument = commandOption[argument] else {
-				guard commandOption.arguments.count > 0 else {
+				guard commandOption.validArguments.count > 0 else {
 					self.currentIndex -= 1
 					return
 				}

@@ -36,15 +36,14 @@ final class SwiftArgsTests: XCTestCase {
 	func testNestedArguments() {
 		let type 		= EnumOption<TestEnumType>(name: "type", shortFlag: "t", longFlag: "type", description: "Sets the type")
 		let privacy = EnumOption<TestPrivacyType>(name: "Privacy", longFlag: "privacy")
-		let library	= CommandOption("library", withArguments: [type])
-		let exec		= CommandOption("executable", withArguments: [type, privacy])
-
-		let initOpt = CommandOption("init", withArguments: [library, exec])
+		let library	= CommandOption("library", withArguments: [type, privacy])
+		let initOpt = CommandOption("init", withArguments: [library])
 		let verbose = BoolOption(name: "verbosity", shortFlag: "v", longFlag: "verbose")
 
 		let args = SwiftArgs(arguments: [initOpt, verbose])
 
 		do {
+
 			try args.parse(["init", "library", "-t", "type1"])
 
 			if let lib = initOpt.argument as? CommandOption, let type = lib.argument as? EnumOption<TestEnumType> {
@@ -55,11 +54,12 @@ final class SwiftArgsTests: XCTestCase {
 
 			XCTAssertEqual(privacy.value, nil)
 
-			try args.parse(["init", "executable", "--privacy", "public"])
+			try args.parse(["init", "library", "--privacy", "public"])
+
 			XCTAssertEqual(privacy.value, TestPrivacyType.publicType)
 
-			if let exec = initOpt.argument as? CommandOption, let privacy = exec.argument as? EnumOption<TestPrivacyType> {
-				XCTAssertEqual(privacy.value, TestPrivacyType.publicType, "Failed: init executable --privacy public")
+			if let lib = initOpt.argument as? CommandOption, let privacy = lib.arguments[1] as? EnumOption<TestPrivacyType> {
+				XCTAssertEqual(privacy.value, TestPrivacyType.publicType, "Failed: init library --privacy public")
 			} else {
 				XCTAssertTrue(false, "Failed: init executable --privacy public")
 			}

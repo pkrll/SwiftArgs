@@ -4,9 +4,13 @@
 //
 public class CommandOption: Argument {
 
-	internal let arguments: [Argument]
-	private(set) public var argument: Argument?
+	internal let validArguments: [Argument]
+	private(set) public var arguments: [Argument] = []
 	private(set) public var value: Bool = false
+
+	public var argument: Argument? {
+		return self.arguments.first
+	}
   /**
    *  CommandOption represents a command (i.e. `init`).
    *
@@ -16,7 +20,7 @@ public class CommandOption: Argument {
    *  - Parameter isRequired: If true, the argument must be set.
    */
 	public init(_ name: String, withArguments: [Argument] = [], description: String? = nil, isRequired: Bool = false) {
-		self.arguments = withArguments
+		self.validArguments = withArguments
 		super.init(name: name, description: description, isRequired: isRequired)
 		self.type = .commandOption
 	}
@@ -32,11 +36,11 @@ public class CommandOption: Argument {
 	}
 
 	internal func takesArgument(_ argument: String) -> Bool {
-		return self.arguments.contains(argument)
+		return self.validArguments.contains(argument)
 	}
 
 	internal subscript(argument: String) -> Argument? {
-		return self.arguments[argument]
+		return self.validArguments[argument]
 	}
 
 	override internal func validate() throws {
@@ -45,7 +49,7 @@ public class CommandOption: Argument {
 		}
 
 		if self.value {
-			try self.arguments.forEach { try $0.validate() }
+			try self.validArguments.forEach { try $0.validate() }
 		}
 	}
 
@@ -55,7 +59,11 @@ public class CommandOption: Argument {
 	}
 
 	internal func setArgument(_ argument: Argument) {
-		self.argument = argument
+	guard self.arguments.contains(argument.name) == false else {
+			return
+		}
+
+		self.arguments.append(argument)
 	}
 
 }
