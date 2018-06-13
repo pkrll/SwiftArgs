@@ -17,6 +17,11 @@ private enum TestLanguage: String {
 	case python
 }
 
+private enum TestBuildType: String {
+	case debug
+	case release
+}
+
 final class SwiftArgsTests: XCTestCase {
 
 	static var allTests = [
@@ -109,10 +114,10 @@ final class SwiftArgsTests: XCTestCase {
 	}
 
 	func testErrorOutput() {
+		let type		= EnumOption<TestBuildType>(name: "type", longFlag: "type", isRequired: true)
 		let privacy = EnumOption<TestPrivacyType>(name: "Privacy", longFlag: "privacy")
 		let string 	= StringOption(name: "name", longFlag: "name")
-		let compose = CommandOption("compose", withArguments: [string])
-
+		let compose = CommandOption("compose", withArguments: [string, type])
 		let args = SwiftArgs(arguments: [compose, privacy, string])
 
 		func testInvalidArgument() throws { try args.parse(["--help"]) }
@@ -120,6 +125,7 @@ final class SwiftArgsTests: XCTestCase {
 		func testInvalidValue() throws { try args.parse(["--privacy", "foo"]) }
 		func testMissingValueEnum() throws { try args.parse(["--privacy"]) }
 		func testMissingValueString() throws { try args.parse(["--name"]) }
+		func testMissingRequiredArgument() throws { try args.parse(["compose"]) }
 
 		XCTAssertThrowsError(try testInvalidArgument()) { error in
 			if let error = error as? SwiftArgsError, case .invalidArgument = error {
@@ -158,6 +164,14 @@ final class SwiftArgsTests: XCTestCase {
 				XCTAssertEqual(error.description, "--name requires a value", "Failed: testMissingValueString()")
 			} else {
 				XCTAssertTrue(false, "Failed: testMissingValueString()")
+			}
+		}
+
+		XCTAssertThrowsError(try testMissingRequiredArgument()) { error in
+			if let error = error as? SwiftArgsError, case .missingRequiredArgument = error {
+				XCTAssertEqual(error.description, "Missing required arguments: --type", "Failed: testMissingRequiredArgument()")
+			} else {
+				XCTAssertTrue(false, "Failed: testMissingRequiredArgument()")
 			}
 		}
 	}
@@ -207,7 +221,7 @@ final class SwiftArgsTests: XCTestCase {
 			isRequired: true)
 
 		let inits = CommandOption("init", withArguments: [help, type], isRequired: true)
-		let add		= CommandOption("add", description: "Add file contents to the index")
+		let add		= CommandOption("add")
 
 		let args = SwiftArgs(arguments: [inits, add])
 
@@ -233,7 +247,14 @@ final class SwiftArgsTests: XCTestCase {
 
 		do {
 			try args.parse(["init", "--type", "public"])
-			XCTAssertTrue(true, "Failed: Required argument is missing")
+			XCTAssertTrue(true)
+		} catch {
+			XCTAssertTrue(false, "Failed: \(error)")
+		}
+
+		do {
+			try args.parse(["add"])
+			XCTAssertTrue(true)
 		} catch {
 			XCTAssertTrue(false, "Failed: \(error)")
 		}
