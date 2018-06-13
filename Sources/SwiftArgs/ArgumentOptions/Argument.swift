@@ -8,19 +8,19 @@ public class Argument: CustomStringConvertible {
   /**
    *  If set true, an error will be thrown if argument is not set.
    */
-	let isRequired: Bool
+	public let isRequired: Bool
   /**
    *  The name of the argument.
    */
-	let name: String
+	public let name: String
   /**
    *  The help description of the argument.
    */
-	let help: String?
+	public let help: String?
   /**
    *  The type of the argument.
    */
-	var type: ArgumentType
+	public var type: ArgumentType
   /**
    *  Name of the argument.
    */
