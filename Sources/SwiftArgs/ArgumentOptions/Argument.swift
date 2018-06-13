@@ -20,7 +20,7 @@ public class Argument: CustomStringConvertible {
   /**
    *  The type of the argument.
    */
-	public var type: ArgumentType
+	var type: ArgumentType
   /**
    *  Name of the argument.
    */
