@@ -186,7 +186,7 @@ final class SwiftArgsTests: XCTestCase {
 		let type = EnumOption<TestPrivacyType>(name: "type", longFlag: "type", description: "Sets the privacy level")
 
 		let clone = CommandOption("clone", description: "Clone a repository into a new directory")
-		let inits = CommandOption("init", description: "Create an empty Git repository or reinitialize an existing one")
+		let inits = CommandOption("init", withArguments: [type], description: "Create an empty Git repository or reinitialize an existing one")
 		let add		= CommandOption("add", description: "Add file contents to the index")
 		let move	= CommandOption("mv", description: "Move or rename a file, a directory, or a symlink")
 		let reset = CommandOption("mv", description: "Reset current HEAD to the specified state")
@@ -210,6 +210,14 @@ final class SwiftArgsTests: XCTestCase {
 		XCTAssertTrue(args.outputStream.contains("Move or rename a file, a directory, or a symlink"))
 		XCTAssertTrue(args.outputStream.contains("Reset current HEAD to the specified state"))
 		XCTAssertTrue(args.outputStream.contains("Remove files from the working tree and from the index"))
+
+		args.printUsage(inits, debugMode: true)
+
+		XCTAssertTrue(args.outputStream.contains("Usage:"))
+		XCTAssertFalse(args.outputStream.contains("Commands:"))
+		XCTAssertTrue(args.outputStream.contains("Options:"))
+		XCTAssertTrue(args.outputStream.contains("--type"))
+		XCTAssertTrue(args.outputStream.contains("Sets the privacy level"))
 	}
 
 	func testRequiredArguments() {
