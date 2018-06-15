@@ -117,6 +117,8 @@ final class SwiftArgsTests: XCTestCase {
 	func testErrorOutput() {
 		let type		= EnumOption<TestBuildType>(name: "type", longFlag: "type", isRequired: true)
 		let privacy = EnumOption<TestPrivacyType>(name: "Privacy", longFlag: "privacy")
+		let version	= BoolOption(name: "version", longFlag: "version", isRequired: true)
+		let quiet		= BoolOption(name: "quiet", longFlag: "quiet")
 		let string 	= StringOption(name: "name", longFlag: "name")
 		let compose = CommandOption("compose", withArguments: [string, type])
 		let args = SwiftArgs(arguments: [compose, privacy, string])
@@ -125,7 +127,10 @@ final class SwiftArgsTests: XCTestCase {
 		func testInvalidValue() throws { try args.parse(["--privacy", "foo"]) }
 		func testMissingValueEnum() throws { try args.parse(["--privacy"]) }
 		func testMissingValueString() throws { try args.parse(["--name"]) }
-		func testMissingRequiredArgument() throws { try args.parse(["compose"]) }
+		func testMissingRequiredArgument1() throws { try args.parse(["compose"]) }
+		func testMissingRequiredArgument2() throws {
+			try SwiftArgs(arguments: [version, quiet]).parse(["--quiet"])
+		}
 
 		XCTAssertThrowsError(try testInvalidArgument()) { error in
 			if let error = error as? SwiftArgsError, case .invalidArgument = error {
@@ -159,11 +164,19 @@ final class SwiftArgsTests: XCTestCase {
 			}
 		}
 
-		XCTAssertThrowsError(try testMissingRequiredArgument()) { error in
+		XCTAssertThrowsError(try testMissingRequiredArgument1()) { error in
 			if let error = error as? SwiftArgsError, case .missingRequiredArgument = error {
 				XCTAssertEqual(error.description, "Missing required arguments: --type", "Failed: testMissingRequiredArgument()")
 			} else {
-				XCTAssertTrue(false, "Failed: testMissingRequiredArgument()")
+				XCTAssertTrue(false, "Failed: testMissingRequiredArgument1()")
+			}
+		}
+
+		XCTAssertThrowsError(try testMissingRequiredArgument2()) { error in
+			if let error = error as? SwiftArgsError, case .missingRequiredArgument = error {
+				XCTAssertEqual(error.description, "Missing required arguments: --version", "Failed: testMissingRequiredArgument2()")
+			} else {
+				XCTAssertTrue(false, "Failed: testMissingRequiredArgument2()")
 			}
 		}
 	}
