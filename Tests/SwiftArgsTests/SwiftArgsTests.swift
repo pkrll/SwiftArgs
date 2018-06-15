@@ -30,7 +30,8 @@ final class SwiftArgsTests: XCTestCase {
 		("testErrorOutput", testErrorOutput),
 		("testPrintUsage", testPrintUsage),
 		("testRequiredArguments", testRequiredArguments),
-		("testChainCommands", testChainCommands)
+		("testChainCommands", testChainCommands),
+		("testAfterCommands", testAfterCommands),
 	]
 
 	func testNestedArguments() {
@@ -121,7 +122,6 @@ final class SwiftArgsTests: XCTestCase {
 		let args = SwiftArgs(arguments: [compose, privacy, string])
 
 		func testInvalidArgument() throws { try args.parse(["--help"]) }
-		func testInvalidCommand() throws { try args.parse(["compose", "foo"]) }
 		func testInvalidValue() throws { try args.parse(["--privacy", "foo"]) }
 		func testMissingValueEnum() throws { try args.parse(["--privacy"]) }
 		func testMissingValueString() throws { try args.parse(["--name"]) }
@@ -132,14 +132,6 @@ final class SwiftArgsTests: XCTestCase {
 				XCTAssertEqual(error.description, "Invalid argument -- --help", "Failed: testInvalidArgument()")
 			} else {
 				XCTAssertTrue(false, "Failed: testInvalidArgument()")
-			}
-		}
-
-		XCTAssertThrowsError(try testInvalidCommand()) { error in
-			if let error = error as? SwiftArgsError, case .invalidCommand = error {
-				XCTAssertEqual(error.description, "Invalid value 'foo' for compose", "Failed: testInvalidCommand()")
-			} else {
-				XCTAssertTrue(false, "Failed: testInvalidCommand()")
 			}
 		}
 
@@ -261,7 +253,7 @@ final class SwiftArgsTests: XCTestCase {
 	}
 
 	func testChainCommands() {
-		let lang = EnumOption<TestLanguage>(name: "language", longFlag: "lang")
+		let lang = EnumOption<TestLanguage>(name: "language", longFlag: "lang", isRequired: true)
 		let build = CommandOption("build")
 		let run		= CommandOption("run", withArguments: [lang])
 		let clean = CommandOption("clean")
@@ -281,6 +273,23 @@ final class SwiftArgsTests: XCTestCase {
 		} catch {
 			XCTAssertTrue(true)
 		}
+	}
+
+	func testAfterCommands() {
+		let lang = EnumOption<TestLanguage>(name: "language", longFlag: "lang")
+		let type = EnumOption<TestBuildType>(name: "type", longFlag: "type")
+		let build = CommandOption("build", withArguments: [type])
+
+		let args = SwiftArgs(arguments: [build, lang])
+
+		do {
+			try args.parse(["build", "--lang", "c"])
+			XCTAssertTrue(true)
+		} catch {
+			print(error)
+			XCTAssertTrue(false)
+		}
+
 	}
 
 }
