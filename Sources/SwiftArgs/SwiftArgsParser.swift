@@ -32,7 +32,7 @@ internal class SwiftArgsParser {
 			return self.printUsage(self.validArguments)
 		}
 
-		return self.printUsage(command.arguments)
+		return self.printUsage(command.validArguments)
 	}
 
 	private func printUsage(_ arguments: [Argument]) -> String {
