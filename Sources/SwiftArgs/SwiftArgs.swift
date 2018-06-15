@@ -37,6 +37,7 @@ public class SwiftArgs {
 		description += "\(self.parser.printUsage(argument))"
 
 		if debugMode {
+			self.outputStream = ""
 			print(description, to: &self.outputStream)
 		} else {
 			print(description, to: &StdoutOutputStream.stream)
