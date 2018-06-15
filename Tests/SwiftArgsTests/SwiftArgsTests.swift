@@ -30,7 +30,8 @@ final class SwiftArgsTests: XCTestCase {
 		("testErrorOutput", testErrorOutput),
 		("testPrintUsage", testPrintUsage),
 		("testRequiredArguments", testRequiredArguments),
-		("testChainCommands", testChainCommands)
+		("testChainCommands", testChainCommands),
+		("testAfterCommands", testAfterCommands),
 	]
 
 	func testNestedArguments() {
@@ -116,30 +117,26 @@ final class SwiftArgsTests: XCTestCase {
 	func testErrorOutput() {
 		let type		= EnumOption<TestBuildType>(name: "type", longFlag: "type", isRequired: true)
 		let privacy = EnumOption<TestPrivacyType>(name: "Privacy", longFlag: "privacy")
+		let version	= BoolOption(name: "version", longFlag: "version", isRequired: true)
+		let quiet		= BoolOption(name: "quiet", longFlag: "quiet")
 		let string 	= StringOption(name: "name", longFlag: "name")
 		let compose = CommandOption("compose", withArguments: [string, type])
 		let args = SwiftArgs(arguments: [compose, privacy, string])
 
 		func testInvalidArgument() throws { try args.parse(["--help"]) }
-		func testInvalidCommand() throws { try args.parse(["compose", "foo"]) }
 		func testInvalidValue() throws { try args.parse(["--privacy", "foo"]) }
 		func testMissingValueEnum() throws { try args.parse(["--privacy"]) }
 		func testMissingValueString() throws { try args.parse(["--name"]) }
-		func testMissingRequiredArgument() throws { try args.parse(["compose"]) }
+		func testMissingRequiredArgument1() throws { try args.parse(["compose"]) }
+		func testMissingRequiredArgument2() throws {
+			try SwiftArgs(arguments: [version, quiet]).parse(["--quiet"])
+		}
 
 		XCTAssertThrowsError(try testInvalidArgument()) { error in
 			if let error = error as? SwiftArgsError, case .invalidArgument = error {
 				XCTAssertEqual(error.description, "Invalid argument -- --help", "Failed: testInvalidArgument()")
 			} else {
 				XCTAssertTrue(false, "Failed: testInvalidArgument()")
-			}
-		}
-
-		XCTAssertThrowsError(try testInvalidCommand()) { error in
-			if let error = error as? SwiftArgsError, case .invalidCommand = error {
-				XCTAssertEqual(error.description, "Invalid value 'foo' for compose", "Failed: testInvalidCommand()")
-			} else {
-				XCTAssertTrue(false, "Failed: testInvalidCommand()")
 			}
 		}
 
@@ -167,11 +164,19 @@ final class SwiftArgsTests: XCTestCase {
 			}
 		}
 
-		XCTAssertThrowsError(try testMissingRequiredArgument()) { error in
+		XCTAssertThrowsError(try testMissingRequiredArgument1()) { error in
 			if let error = error as? SwiftArgsError, case .missingRequiredArgument = error {
 				XCTAssertEqual(error.description, "Missing required arguments: --type", "Failed: testMissingRequiredArgument()")
 			} else {
-				XCTAssertTrue(false, "Failed: testMissingRequiredArgument()")
+				XCTAssertTrue(false, "Failed: testMissingRequiredArgument1()")
+			}
+		}
+
+		XCTAssertThrowsError(try testMissingRequiredArgument2()) { error in
+			if let error = error as? SwiftArgsError, case .missingRequiredArgument = error {
+				XCTAssertEqual(error.description, "Missing required arguments: --version", "Failed: testMissingRequiredArgument2()")
+			} else {
+				XCTAssertTrue(false, "Failed: testMissingRequiredArgument2()")
 			}
 		}
 	}
@@ -181,7 +186,7 @@ final class SwiftArgsTests: XCTestCase {
 		let type = EnumOption<TestPrivacyType>(name: "type", longFlag: "type", description: "Sets the privacy level")
 
 		let clone = CommandOption("clone", description: "Clone a repository into a new directory")
-		let inits = CommandOption("init", description: "Create an empty Git repository or reinitialize an existing one")
+		let inits = CommandOption("init", withArguments: [type], description: "Create an empty Git repository or reinitialize an existing one")
 		let add		= CommandOption("add", description: "Add file contents to the index")
 		let move	= CommandOption("mv", description: "Move or rename a file, a directory, or a symlink")
 		let reset = CommandOption("mv", description: "Reset current HEAD to the specified state")
@@ -205,6 +210,14 @@ final class SwiftArgsTests: XCTestCase {
 		XCTAssertTrue(args.outputStream.contains("Move or rename a file, a directory, or a symlink"))
 		XCTAssertTrue(args.outputStream.contains("Reset current HEAD to the specified state"))
 		XCTAssertTrue(args.outputStream.contains("Remove files from the working tree and from the index"))
+
+		args.printUsage(inits, debugMode: true)
+
+		XCTAssertTrue(args.outputStream.contains("Usage:"))
+		XCTAssertFalse(args.outputStream.contains("Commands:"))
+		XCTAssertTrue(args.outputStream.contains("Options:"))
+		XCTAssertTrue(args.outputStream.contains("--type"))
+		XCTAssertTrue(args.outputStream.contains("Sets the privacy level"))
 	}
 
 	func testRequiredArguments() {
@@ -261,7 +274,7 @@ final class SwiftArgsTests: XCTestCase {
 	}
 
 	func testChainCommands() {
-		let lang = EnumOption<TestLanguage>(name: "language", longFlag: "lang")
+		let lang = EnumOption<TestLanguage>(name: "language", longFlag: "lang", isRequired: true)
 		let build = CommandOption("build")
 		let run		= CommandOption("run", withArguments: [lang])
 		let clean = CommandOption("clean")
@@ -281,6 +294,23 @@ final class SwiftArgsTests: XCTestCase {
 		} catch {
 			XCTAssertTrue(true)
 		}
+	}
+
+	func testAfterCommands() {
+		let lang = EnumOption<TestLanguage>(name: "language", longFlag: "lang")
+		let type = EnumOption<TestBuildType>(name: "type", longFlag: "type")
+		let build = CommandOption("build", withArguments: [type])
+
+		let args = SwiftArgs(arguments: [build, lang])
+
+		do {
+			try args.parse(["build", "--lang", "c"])
+			XCTAssertTrue(true)
+		} catch {
+			print(error)
+			XCTAssertTrue(false)
+		}
+
 	}
 
 }

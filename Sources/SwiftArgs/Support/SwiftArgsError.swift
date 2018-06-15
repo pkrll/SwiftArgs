@@ -6,7 +6,6 @@ public enum SwiftArgsError: Error, CustomStringConvertible {
 
 	case missingValue(String)
 	case invalidValue(String, for: String)
-	case invalidCommand(String, for: String)
 	case invalidArgument(String)
 	case missingRequiredArgument(String)
 
@@ -17,8 +16,6 @@ public enum SwiftArgsError: Error, CustomStringConvertible {
 		case let .missingValue(option):
 			return "\(option) requires a value"
 		case let .invalidValue(value, option):
-			return "Invalid value '\(value)' for \(option)"
-		case let .invalidCommand(value, option):
 			return "Invalid value '\(value)' for \(option)"
 		case let .invalidArgument(value):
 			return "Invalid argument -- \(value)"

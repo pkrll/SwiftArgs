@@ -8,19 +8,19 @@ public class Argument: CustomStringConvertible {
   /**
    *  If set true, an error will be thrown if argument is not set.
    */
-	let isRequired: Bool
+	public let isRequired: Bool
   /**
    *  The name of the argument.
    */
-	let name: String
+	public let name: String
   /**
    *  The help description of the argument.
    */
-	let help: String?
+	public let help: String?
   /**
    *  The type of the argument.
    */
-	var type: ArgumentType
+	var type: ArgumentType = .argument
   /**
    *  Name of the argument.
    */
@@ -39,7 +39,6 @@ public class Argument: CustomStringConvertible {
 		self.name = name
 		self.help = description
 		self.isRequired = isRequired
-		self.type = .argument
 	}
 
 	internal func equals(_ compare: String) -> Bool {

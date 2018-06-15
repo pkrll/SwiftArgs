@@ -51,6 +51,8 @@ public class CommandOption: Argument {
 		if self.value {
 			try self.validArguments.forEach { try $0.validate() }
 		}
+
+		try super.validate()
 	}
 
 	internal override func setValue(_ value: Any) throws {

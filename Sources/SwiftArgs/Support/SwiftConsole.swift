@@ -45,12 +45,12 @@ struct SwiftConsole {
 
 		for output in self.rows {
 			if output is SwiftConsoleRow, let output = output as? SwiftConsoleRow {
-				arguments.append((output.left as NSString).utf8String!)
-				arguments.append((output.right as NSString).utf8String!)
+				arguments.append(NSString(string: output.left).utf8String!)
+				arguments.append(NSString(string: output.right).utf8String!)
 
 				strFormat += "  %-\(padding)s%s\n"
 			} else if output is SwiftConsoleHeader, let output = output as? SwiftConsoleHeader {
-				arguments.append((output.title as NSString).utf8String!)
+				arguments.append(NSString(string: output.title).utf8String!)
 
 				strFormat += "\n%s\n"
 			}

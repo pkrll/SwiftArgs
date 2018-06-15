@@ -66,6 +66,8 @@ public class FlagOption<T>: Argument {
 		if self.isRequired && self.value == nil {
 			throw SwiftArgsError.missingRequiredArgument(self.description)
 		}
+
+		try super.validate()
 	}
 
 	override internal func setValue(_ value: Any) throws {

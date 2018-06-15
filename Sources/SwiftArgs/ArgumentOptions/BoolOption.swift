@@ -26,6 +26,8 @@ public class BoolOption: FlagOption<Bool> {
 		if self.isRequired && !self.value! {
 			throw SwiftArgsError.missingRequiredArgument(self.description)
 		}
+
+		try super.validate()
 	}
 
 	override internal func setValue(_ value: Any) throws {
