@@ -20,7 +20,7 @@ public class Argument: CustomStringConvertible {
   /**
    *  The type of the argument.
    */
-	var type: ArgumentType
+	var type: ArgumentType = .argument
   /**
    *  Name of the argument.
    */
@@ -39,7 +39,6 @@ public class Argument: CustomStringConvertible {
 		self.name = name
 		self.help = description
 		self.isRequired = isRequired
-		self.type = .argument
 	}
 
 	internal func equals(_ compare: String) -> Bool {
